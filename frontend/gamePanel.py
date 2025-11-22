@@ -209,8 +209,7 @@ def game_loop_single():
     btn_replay = Button("Replay", SCREEN_WIDTH - BTN_W - 20, 20, BTN_W, BTN_H, "REPLAY")
     game_buttons = [btn_back, btn_replay]
 
-
-
+    #in game var
     SECRET_WORD = ""
     current_guess = ""
     guesses = []
@@ -219,14 +218,80 @@ def game_loop_single():
     game_over = False
 
     def check_guess(guess):
-         pass
+        colors = [GRAY] * WORD_LENGTH
+        secret_word_letters = list(SECRET_WORD)
+
+        #find correct
+        for i in range(WORD_LENGTH):
+            if guess[i] == SECRET_WORD[i]:
+                colors[i] = GREEN
+                secret_word_letters[i] = None
+
+        #find present
+        for i in range(WORD_LENGTH):
+            if colors[i] == GREEN:
+                continue
+
+            try:
+                idx = secret_word_letters.index(guess[i])
+                colors[i] = YELLOW
+                secret_word_letters[idx] = None
+            except ValueError:
+                pass
+
+        return colors
 
     def reset_game():
-        pass
+        nonlocal SECRET_WORD, current_guess, guesses, results, current_row, game_over
+        SECRET_WORD = random.choice(WORD_LIST).upper()
+        print(f"New Secret Word: {SECRET_WORD}")
+        current_guess = ""
+        guesses = []
+        results = []
+        current_row = 0
+        game_over = False
 
     #reset game in enter
     reset_game()
  
+    grid_total_width, grid_total_height = WordleCanvas.get_total_dimensions(pvp=False)
+
+    grid_start_x = (SCREEN_WIDTH - grid_total_width) // 2
+    grid_start_y = 120
+    #create canvas for single
+    wordle_canvas = WordleCanvas(grid_start_x, grid_start_y, pvp=False)
+
+    running = True
+    while running:
+        screen.fill(DARK_GRAY)
+        mouse_pos = pygame.mouse.get_pos()
+
+        # --- 事件处理 ---
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    for btn in game_buttons:
+                        action = btn.check_click(mouse_pos)
+
+                        if action == "BACK":
+                            return
+
+                        elif action == "REPLAY":
+                            reset_game()
+                            print("Game reset!")
+
+            # -keyboard listener
+            if event.type == pygame.KEYDOWN and not game_over:
+                print(event.key)
+ 
+
+       
+        pygame.display.flip()
+        clock.tick(60)
 
 # run main
 if __name__ == "__main__":
