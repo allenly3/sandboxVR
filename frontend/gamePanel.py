@@ -26,19 +26,44 @@ font_btn = pygame.font.Font(None, 50)
 
 
 class Button:
-    def __init__(self, text, x, y, width, height, action_code):
-        self.rect = pygame.Rect(x, y, width, height)
+    def __init__(self, text, x, y, action_code):
+        self.rect = pygame.Rect(x, y, 450, 80)
         self.text = text
         self.text_surf = font_btn.render(text, True, WHITE)
         self.text_rect = self.text_surf.get_rect(center=self.rect.center)
         self.action_code = action_code
         self.is_hovered = False
 
+    def draw(self, surface):
+        color = BTN_HOVER_COLOR if self.is_hovered else BTN_COLOR
+        pygame.draw.rect(surface, color, self.rect, border_radius=10)
+        pygame.draw.rect(surface, WHITE, self.rect, 2, border_radius=10)
+        surface.blit(self.text_surf, self.text_rect)
+
+    def check_hover(self, mouse_pos):
+        self.is_hovered = self.rect.collidepoint(mouse_pos)
+
+    def check_click(self, mouse_pos):
+        if self.rect.collidepoint(mouse_pos):
+            return self.action_code
+        return None
+
 
 # main
 def main_menu():
+    center_x = SCREEN_WIDTH // 2 - 450 // 2
+
+    btn_single = Button("Single Player(Task 1)", center_x, 200, "SINGLE")
+    btn_online = Button("Online Mode(Task 2&3)", center_x, 300, "ONLINE")
+    btn_pvp = Button("2 Players(Task 4)", center_x, 400, "PVP")
+
+    buttons = [btn_single, btn_online, btn_pvp]
+
     running = True
     while running:
+
+        for btn in buttons:
+            btn.draw(screen)
 
         pygame.display.flip()
         clock.tick(60)
