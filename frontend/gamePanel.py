@@ -94,35 +94,139 @@ def main_menu():
 
 
 class WordleCanvas:
+    # single, serve mode
     GRID_ROWS = 6
     GRID_COLS = 5
-    CELL_SIZE = 70
-    CELL_MARGIN = 10
+    DEFAULT_CELL_SIZE = 70
+    DEFAULT_CELL_MARGIN = 10
 
-    def __init__(self, x, y, pvp = True):
+    # PVP mode
+    PVP_CELL_SIZE = 40
+    PVP_CELL_MARGIN = 7
+
+    def __init__(self, x, y, pvp=False):
         # Canvas top-left position
         self.x = x
         self.y = y
-        self.font_letter = pygame.font.Font(None, 60)
-        self.currLine = 0 
+        self.is_pvp = pvp
+
         if pvp:
-            self.CELL_SIZE = 40
-            self.CELL_MARGIN = 7
+            self.cell_size = self.PVP_CELL_SIZE
+            self.cell_margin = self.PVP_CELL_MARGIN
+            self.font_letter = pygame.font.Font(None, 40)  
+        else:
+            self.cell_size = self.DEFAULT_CELL_SIZE
+            self.cell_margin = self.DEFAULT_CELL_MARGIN
+            self.font_letter = pygame.font.Font(None, 60)
 
+        # record for check easily
+        self.record = [[None for _ in range(5)] for _ in range(6)]
 
-        # Calculate total width/height for layout purposes
         self.total_width = (
-            self.GRID_COLS * self.CELL_SIZE + (self.GRID_COLS - 1) * self.CELL_MARGIN
+            self.GRID_COLS * self.cell_size + (self.GRID_COLS - 1) * self.cell_margin
         )
         self.total_height = (
-            self.GRID_ROWS * self.CELL_SIZE + (self.GRID_ROWS - 1) * self.CELL_MARGIN
+            self.GRID_ROWS * self.cell_size + (self.GRID_ROWS - 1) * self.cell_margin
         )
 
-     
+    @classmethod
+    def get_total_dimensions(cls, pvp=False):
+        if pvp:
+            cell_size = cls.PVP_CELL_SIZE
+            cell_margin = cls.PVP_CELL_MARGIN
+        else:
+            cell_size = cls.DEFAULT_CELL_SIZE
+            cell_margin = cls.DEFAULT_CELL_MARGIN
 
+        width = cls.GRID_COLS * cell_size + (cls.GRID_COLS - 1) * cell_margin
+        height = cls.GRID_ROWS * cell_size + (cls.GRID_ROWS - 1) * cell_margin
+        return width, height
 
+    def draw(self, surface, guesses, results, current_guess, current_row, game_over):
+        for row in range(self.GRID_ROWS):
+            for col in range(self.GRID_COLS):
  
+                x = self.x + col * (self.cell_size + self.cell_margin)
+                y = self.y + row * (self.cell_size + self.cell_margin)
+                rect = pygame.Rect(x, y, self.cell_size, self.cell_size)
 
+                fill_color = DARK_GRAY
+                border_color = GRAY
+                letter = ""
+ 
+                if row < current_row:
+                    if row < len(results):
+                        fill_color = results[row][col]
+                        border_color = results[row][col]
+                        letter = guesses[row][col]
+ 
+                elif row == current_row and not game_over:
+                    border_color = WHITE if col < len(current_guess) else GRAY
+                    if col < len(current_guess):
+                        letter = current_guess[col]
+
+         
+                pygame.draw.rect(surface, fill_color, rect, border_radius=5)
+                pygame.draw.rect(surface, border_color, rect, 2, border_radius=5)
+
+                # letter filled
+                if letter:
+                    letter_surf = self.font_letter.render(letter, True, WHITE)
+                    letter_rect = letter_surf.get_rect(center=rect.center)
+                    surface.blit(letter_surf, letter_rect)
+
+    @staticmethod
+    def line_check(guess, word_length=5):
+        return len(guess) == word_length
+
+    @staticmethod
+    def result_check(colors):
+        global GREEN
+        return all(color == GREEN for color in colors)
+
+
+# single
+def game_loop_single():
+    WORD_LIST = [
+        "APPLE",
+        "TIGER",
+        "HOUSE",
+        "GRAPE",
+        "CHAIR",
+        "TABLE",
+        "PLANE",
+        "CANDY",
+        "FANCY",
+        "DRIVE",
+        "REACT",
+    ]
+ 
+    BTN_W, BTN_H = 150, 50
+    WORD_LENGTH = 5
+    MAX_GUESSES = 6
+
+    btn_back = Button("Back", 20, 20, BTN_W, BTN_H, "BACK")
+    btn_replay = Button("Replay", SCREEN_WIDTH - BTN_W - 20, 20, BTN_W, BTN_H, "REPLAY")
+    game_buttons = [btn_back, btn_replay]
+
+
+
+    SECRET_WORD = ""
+    current_guess = ""
+    guesses = []
+    results = []
+    current_row = 0
+    game_over = False
+
+    def check_guess(guess):
+         pass
+
+    def reset_game():
+        pass
+
+    #reset game in enter
+    reset_game()
+ 
 
 # run main
 if __name__ == "__main__":
