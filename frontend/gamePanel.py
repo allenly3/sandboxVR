@@ -1,5 +1,6 @@
 import sys
 import pygame
+import random
 
 pygame.init()
 
@@ -89,11 +90,48 @@ def main_menu():
         clock.tick(60)
 
 
+# canvas class
+
+
+class WordleCanvas:
+    GRID_ROWS = 6
+    GRID_COLS = 5
+    CELL_SIZE = 70
+    CELL_MARGIN = 10
+
+    def __init__(self, x, y, pvp = True):
+        # Canvas top-left position
+        self.x = x
+        self.y = y
+        self.font_letter = pygame.font.Font(None, 60)
+        self.currLine = 0 
+        if pvp:
+            self.CELL_SIZE = 40
+            self.CELL_MARGIN = 7
+
+
+        # Calculate total width/height for layout purposes
+        self.total_width = (
+            self.GRID_COLS * self.CELL_SIZE + (self.GRID_COLS - 1) * self.CELL_MARGIN
+        )
+        self.total_height = (
+            self.GRID_ROWS * self.CELL_SIZE + (self.GRID_ROWS - 1) * self.CELL_MARGIN
+        )
+
+     
+
+
+ 
+
+
 # run main
 if __name__ == "__main__":
     while True:
         mode = main_menu()
 
-        print(f"--> Loading game mode: {mode}...")
+        if mode == "SINGLE":
+            game_loop_single()
+        elif mode == "ONLINE":
+            print("Online mode coming soon...")
 
-        pygame.time.delay(500)
+        # pygame.time.delay(500)
