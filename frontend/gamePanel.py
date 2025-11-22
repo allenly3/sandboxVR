@@ -2,18 +2,18 @@ import pygame
 
 pygame.init()
 
-#Screen size
+# Screen size
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
 TITLE = "SandboxVR Wordle Game"
 
-#Color
+# Color
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GRAY = (200, 200, 200)
 DARK_GRAY = (50, 50, 50)
-GREEN = (106, 170, 100) 
-YELLOW = (201, 180, 88) 
+GREEN = (106, 170, 100)
+YELLOW = (201, 180, 88)
 BTN_COLOR = (70, 130, 180)
 BTN_HOVER_COLOR = (100, 149, 237)
 
@@ -31,23 +31,20 @@ class Button:
         self.text = text
         self.text_surf = font_btn.render(text, True, WHITE)
         self.text_rect = self.text_surf.get_rect(center=self.rect.center)
-        self.action_code = action_code 
+        self.action_code = action_code
         self.is_hovered = False
 
 
-
-#main
+# main
 def main_menu():
     running = True
     while running:
-        
-
 
         pygame.display.flip()
         clock.tick(60)
 
 
-#run main
+# run main
 if __name__ == "__main__":
     while True:
         mode = main_menu()
