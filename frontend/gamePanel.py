@@ -1,3 +1,4 @@
+import sys
 import pygame
 
 pygame.init()
@@ -61,8 +62,26 @@ def main_menu():
 
     running = True
     while running:
+        title_surf = font_title.render("SandboxVR Wordle Task", True, GREEN)
+        title_rect = title_surf.get_rect(center=(SCREEN_WIDTH // 2, 100))
+        screen.blit(title_surf, title_rect)
+
+        mouse_pos = pygame.mouse.get_pos()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1: #left click
+                    for btn in buttons:
+                        action = btn.check_click(mouse_pos)
+                        if action:
+                            print(f"Selected Mode: {action}")
+                            return action
 
         for btn in buttons:
+            btn.check_hover(mouse_pos)
             btn.draw(screen)
 
         pygame.display.flip()
@@ -73,4 +92,7 @@ def main_menu():
 if __name__ == "__main__":
     while True:
         mode = main_menu()
+
+        print(f"--> Loading game mode: {mode}...")
+
         pygame.time.delay(1000)
