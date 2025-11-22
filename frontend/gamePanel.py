@@ -27,8 +27,8 @@ font_btn = pygame.font.Font(None, 50)
 
 
 class Button:
-    def __init__(self, text, x, y, action_code):
-        self.rect = pygame.Rect(x, y, 450, 80)
+    def __init__(self, text, x, y, width, height, action_code):
+        self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.text_surf = font_btn.render(text, True, WHITE)
         self.text_rect = self.text_surf.get_rect(center=self.rect.center)
@@ -54,14 +54,15 @@ class Button:
 def main_menu():
     center_x = SCREEN_WIDTH // 2 - 450 // 2
 
-    btn_single = Button("Single Player(Task 1)", center_x, 200, "SINGLE")
-    btn_online = Button("Online Mode(Task 2&3)", center_x, 300, "ONLINE")
-    btn_pvp = Button("2 Players(Task 4)", center_x, 400, "PVP")
+    btn_single = Button("Single Player(Task 1)", center_x, 200, 450, 80, "SINGLE")
+    btn_online = Button("Online Mode(Task 2&3)", center_x, 300, 450, 80, "ONLINE")
+    btn_pvp = Button("2 Players(Task 4)", center_x, 400, 450, 80, "PVP")
 
     buttons = [btn_single, btn_online, btn_pvp]
 
     running = True
     while running:
+        screen.fill(DARK_GRAY)
         title_surf = font_title.render("SandboxVR Wordle Task", True, GREEN)
         title_rect = title_surf.get_rect(center=(SCREEN_WIDTH // 2, 100))
         screen.blit(title_surf, title_rect)
@@ -73,7 +74,7 @@ def main_menu():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1: #left click
+                if event.button == 1:  # left click
                     for btn in buttons:
                         action = btn.check_click(mouse_pos)
                         if action:
@@ -95,4 +96,4 @@ if __name__ == "__main__":
 
         print(f"--> Loading game mode: {mode}...")
 
-        pygame.time.delay(1000)
+        pygame.time.delay(500)
