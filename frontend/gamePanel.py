@@ -83,7 +83,7 @@ class Button:
         return None
 
 
-# region canvas class
+# region WordleCanvas class
 class WordleCanvas:
     # single, serve mode
     GRID_ROWS = 6
@@ -177,7 +177,8 @@ class WordleCanvas:
                     letter_surf = self.font_letter.render(letter, True, WHITE)
                     letter_rect = letter_surf.get_rect(center=rect.center)
                     surface.blit(letter_surf, letter_rect)
-
+                    
+    #region wordleCanvas static
     @staticmethod
     def line_check(guess, word_length=5):
         return len(guess) == word_length
@@ -186,6 +187,31 @@ class WordleCanvas:
     def result_check(colors):
         global GREEN
         return all(color == GREEN for color in colors)
+
+    @staticmethod
+    def guess_check(guess, SECRET_WORD):
+        colors = [GRAY] * WORD_LENGTH
+        secret_word_letters = list(SECRET_WORD)
+
+        # find correct
+        for i in range(WORD_LENGTH):
+            if guess[i] == SECRET_WORD[i]:
+                colors[i] = GREEN
+                secret_word_letters[i] = None
+
+        # find present
+        for i in range(WORD_LENGTH):
+            if colors[i] == GREEN:
+                continue
+
+            try:
+                idx = secret_word_letters.index(guess[i])
+                colors[i] = YELLOW
+                secret_word_letters[idx] = None
+            except ValueError:
+                pass
+
+        return colors
 
 
 # region main menu
@@ -241,30 +267,6 @@ def game_loop_single():
     results = []
     current_row = 0
     game_over = False
-
-    def check_guess(guess):
-        colors = [GRAY] * WORD_LENGTH
-        secret_word_letters = list(SECRET_WORD)
-
-        # find correct
-        for i in range(WORD_LENGTH):
-            if guess[i] == SECRET_WORD[i]:
-                colors[i] = GREEN
-                secret_word_letters[i] = None
-
-        # find present
-        for i in range(WORD_LENGTH):
-            if colors[i] == GREEN:
-                continue
-
-            try:
-                idx = secret_word_letters.index(guess[i])
-                colors[i] = YELLOW
-                secret_word_letters[idx] = None
-            except ValueError:
-                pass
-
-        return colors
 
     def reset_game():
         nonlocal SECRET_WORD, current_guess, guesses, results, current_row, game_over
@@ -330,7 +332,9 @@ def game_loop_single():
                 elif key == pygame.K_RETURN or key == pygame.K_KP_ENTER:
 
                     if WordleCanvas.line_check(current_guess, WORD_LENGTH):
-                        guess_colors = check_guess(current_guess)
+                        guess_colors = WordleCanvas.guess_check(
+                            current_guess, SECRET_WORD
+                        )
 
                         guesses.append(current_guess)
                         results.append(guess_colors)
@@ -587,30 +591,6 @@ def game_loop_pvp():
     # player to enter letters
     active_player = random.choice([1, 2])
 
-    def check_guess(guess):
-        colors = [GRAY] * WORD_LENGTH
-        secret_word_letters = list(SECRET_WORD)
-
-        # find correct
-        for i in range(WORD_LENGTH):
-            if guess[i] == SECRET_WORD[i]:
-                colors[i] = GREEN
-                secret_word_letters[i] = None
-
-        # find present
-        for i in range(WORD_LENGTH):
-            if colors[i] == GREEN:
-                continue
-
-            try:
-                idx = secret_word_letters.index(guess[i])
-                colors[i] = YELLOW
-                secret_word_letters[idx] = None
-            except ValueError:
-                pass
-
-        return colors
-
     def reset_game():
         nonlocal SECRET_WORD, current_guess1, guesses1, results1, current_row1, game_over1
         nonlocal current_guess2, guesses2, results2, current_row2, game_over2
@@ -707,7 +687,9 @@ def game_loop_pvp():
                 elif key == pygame.K_RETURN or key == pygame.K_KP_ENTER:
 
                     if WordleCanvas.line_check(current_guess, WORD_LENGTH):
-                        guess_colors = check_guess(current_guess)
+                        guess_colors = WordleCanvas.guess_check(
+                            current_guess, SECRET_WORD
+                        )
 
                         guesses = guesses1 if active_player == 1 else guesses2
                         results = results1 if active_player == 1 else results2
