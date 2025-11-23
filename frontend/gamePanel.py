@@ -180,7 +180,7 @@ class WordleCanvas:
 
                 elif row == current_row and not game_over:
                     border_color = WHITE if col < len(current_guess) else GRAY
-                    if col < len(current_guess):
+                    if col < len(current_guess) and not self.is_pvp:
                         letter = current_guess[col]
 
                 pygame.draw.rect(surface, fill_color, rect, border_radius=5)
