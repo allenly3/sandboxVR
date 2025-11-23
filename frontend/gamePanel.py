@@ -381,9 +381,9 @@ def game_loop_single():
         clock.tick(60)
 
 
-# region single ONLINE scene
 
 
+#region resetAPI
 def send_api_reset():
     try:
         response = requests.post(f"{API_BASE_URL}/reset")
@@ -394,7 +394,7 @@ def send_api_reset():
         print(f"RESET Error during reset: {e}")
         return None
 
-
+#region guessAPI
 def send_api_guess(word):
     global NORMAL
     try:
@@ -409,7 +409,7 @@ def send_api_guess(word):
         print(f"RESET Error during reset: {e}")
         return None
 
-
+# region single ONLINE scene
 def game_loop_single_online():
     global NORMAL
 
@@ -444,7 +444,7 @@ def game_loop_single_online():
         current_row = 0
         game_over = False
         if send_api_reset() is None:
-            print("ERR: NO SERVER CONNECTION.")
+            print("Reset ERR: NO SERVER CONNECTION.")
             return False
 
         return True
