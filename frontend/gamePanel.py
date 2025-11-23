@@ -25,12 +25,13 @@ TITLE = "SandboxVR Wordle Game"
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GRAY = (100, 100, 100)
-DARK_GRAY = (50, 50, 50)
+DARK_GRAY = (17, 22, 29) 
 GREEN = (106, 170, 100)
 YELLOW = (201, 180, 88)
-BTN_COLOR = (70, 130, 180)
-BTN_HOVER_COLOR = (100, 149, 237)
+BTN_COLOR = (0, 143, 255)
+BTN_HOVER_COLOR = (0, 158, 255)
 BTN_SELECT_COLOR = (0, 255, 0)
+TXT_COLOR = (169, 179, 193)
 
 # init panel
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -239,7 +240,7 @@ def main_menu():
     running = True
     while running:
         screen.fill(DARK_GRAY)
-        title_surf = font_title.render("SandboxVR Wordle Task", True, GREEN)
+        title_surf = font_title.render("SandboxVR Wordle Task", True, WHITE)
         title_rect = title_surf.get_rect(center=(SCREEN_WIDTH // 2, 100))
         screen.blit(title_surf, title_rect)
 
