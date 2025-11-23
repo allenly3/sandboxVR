@@ -7,7 +7,7 @@ import os
 pygame.init()
 pygame.mixer.init()
 
-#sound
+# sound
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(BASE_DIR, "assets")
 
@@ -281,7 +281,7 @@ def game_loop_single():
     game_over = False
 
     def reset_game():
-        nonlocal SECRET_WORD, current_guess, guesses, results, current_row, game_over,sound_PLAY
+        nonlocal SECRET_WORD, current_guess, guesses, results, current_row, game_over, sound_PLAY
         SECRET_WORD = random.choice(WORD_LIST).upper()
         print(f"New Secret Word: {SECRET_WORD}")
         current_guess = ""
@@ -361,6 +361,7 @@ def game_loop_single():
                             # print("Game Over. The word was ", SECRET_WORD)
 
                         current_row += 1
+                        soundEnter.play()
                     else:
                         print("Guess must be 5 letters long!")
 
@@ -378,13 +379,13 @@ def game_loop_single():
             message = ""
 
             if current_row <= 6 and WordleCanvas.result_check(results[current_row - 1]):
-                if sound_PLAY :
+                if sound_PLAY:
                     soundWin.play()
                     sound_PLAY = False
                 resultColor = GREEN
                 message = "You Win!"
             else:
-                if sound_PLAY :
+                if sound_PLAY:
                     soundLose.play()
                     sound_PLAY = False
                 resultColor = YELLOW
@@ -431,7 +432,7 @@ def send_api_guess(word):
 # region single ONLINE scene
 def game_loop_single_online():
     global NORMAL
-    sound_PLAY  = True
+    sound_PLAY = True
 
     btn_back = Button("Back", 20, 20, BTN_W, BTN_H, "BACK")
     btn_replay = Button("Replay", SCREEN_WIDTH - BTN_W - 20, 20, BTN_W, BTN_H, "REPLAY")
@@ -560,6 +561,7 @@ def game_loop_single_online():
                             # print("Game Over. The word was ", SECRET_WORD)
 
                         current_row += 1
+                        soundEnter.play()
                     else:
                         print("Guess must be 5 letters long!")
 
@@ -630,7 +632,7 @@ def game_loop_pvp():
     active_player = random.choice([1, 2])
 
     def reset_game():
-        nonlocal SECRET_WORD, current_guess1, guesses1, results1, current_row1, game_over1,sound_PLAY
+        nonlocal SECRET_WORD, current_guess1, guesses1, results1, current_row1, game_over1, sound_PLAY
         nonlocal current_guess2, guesses2, results2, current_row2, game_over2
         nonlocal game_over, active_player
 
@@ -737,7 +739,7 @@ def game_loop_pvp():
                         results.append(guess_colors)
 
                         is_win = WordleCanvas.result_check(guess_colors)
-
+                        soundEnter.play()
                         current_guess = ""
                         if active_player == 1:
                             current_guess1 = ""
