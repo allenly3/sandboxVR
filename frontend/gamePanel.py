@@ -178,7 +178,7 @@ class WordleCanvas:
                     letter_rect = letter_surf.get_rect(center=rect.center)
                     surface.blit(letter_surf, letter_rect)
 
-    #region wordleCanvas static
+    # region wordleCanvas static
     @staticmethod
     def line_check(guess, word_length=5):
         return len(guess) == word_length
@@ -520,7 +520,7 @@ def game_loop_single_online():
                         guesses.append(current_guess)
                         results.append(guess_colors)
                         current_guess = ""
-
+                        SECRET_WORD = resp["SECRET_WORD"]
                         if resp["correct"]:
                             game_over = True
                             # print("Win!")

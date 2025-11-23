@@ -52,6 +52,7 @@ YELLOW = (201, 180, 88)
 
 
 TARGET = ""
+COUNTER = 0
 
 # validation
 
@@ -75,7 +76,9 @@ def validateCheck(guess):
 @app.post("/reset")
 def resetTarget():
     global TARGET
+    global COUNTER
     TARGET = random.choice(WORD_LIST)
+    COUNTER = 0
     print(TARGET)
     return {"status": "201"}
 
@@ -84,6 +87,8 @@ def resetTarget():
 @app.post("/normalguess/{guess}")
 def handle_normal_guess(guess: str) -> Dict[str, Any]:
     global TARGET
+    global COUNTER
+    COUNTER += 1
 
     guess = guess.upper().strip()
     validateCheck(guess)
@@ -106,7 +111,10 @@ def handle_normal_guess(guess: str) -> Dict[str, Any]:
             else:
                 colors[i] = GRAY
 
-    return {"colors": colors, "correct": guess == TARGET}
+    if COUNTER < 6:
+        return {"colors": colors, "correct": guess == TARGET, "SECRET_WORD": "*****"}
+    else:
+        return {"colors": colors, "correct": guess == TARGET, "SECRET_WORD": TARGET}
 
 
 # region API cheatguess
