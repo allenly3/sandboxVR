@@ -19,7 +19,7 @@ GREEN = (106, 170, 100)
 YELLOW = (201, 180, 88)
 BTN_COLOR = (70, 130, 180)
 BTN_HOVER_COLOR = (100, 149, 237)
-BTN_SELECT_COLOR =(0, 255, 0)
+BTN_SELECT_COLOR = (0, 255, 0)
 
 # init panel
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -226,7 +226,6 @@ def main_menu():
         clock.tick(60)
 
 
-
 # single
 def game_loop_single():
 
@@ -376,23 +375,25 @@ def game_loop_single():
         pygame.display.flip()
         clock.tick(60)
 
-#single ONLINE
+
+# single ONLINE
 def game_loop_single_online():
+    global NORMAL
 
     btn_back = Button("Back", 20, 20, BTN_W, BTN_H, "BACK")
     btn_replay = Button("Replay", SCREEN_WIDTH - BTN_W - 20, 20, BTN_W, BTN_H, "REPLAY")
 
-    btn_normal= Button("Normal", 350, 20, BTN_W, BTN_H, "NORMAL")
+    btn_normal = Button("Normal", 350, 20, BTN_W, BTN_H, "NORMAL")
     btn_cheat = Button("Cheat", SCREEN_WIDTH - BTN_W - 350, 20, BTN_W, BTN_H, "CHEAT")
-    
-    game_buttons = [btn_back, btn_replay,btn_normal , btn_cheat]
-    
-    if NORMAL :
-        btn_normal.is_selected= True
+
+    game_buttons = [btn_back, btn_replay, btn_normal, btn_cheat]
+
+    if NORMAL:
+        btn_normal.is_selected = True
         btn_cheat.is_selected = False
     else:
-        btn_normal.is_selected= None
-        btn_cheat.is_selected = False  
+        btn_normal.is_selected = False
+        btn_cheat.is_selected = True
 
     # in game var
     SECRET_WORD = ""
@@ -467,6 +468,15 @@ def game_loop_single_online():
                         elif action == "REPLAY":
                             reset_game()
                             print("Game reset!")
+
+                        elif action == "NORMAL":
+                            NORMAL = True
+                            btn_normal.is_selected = True
+                            btn_cheat.is_selected = False
+                        elif action == "CHEAT":
+                            NORMAL = False
+                            btn_normal.is_selected = False
+                            btn_cheat.is_selected = True
 
             # -keyboard listener
             if event.type == pygame.KEYDOWN and not game_over:
