@@ -482,13 +482,23 @@ def game_loop_single_online():
                             reset_game()
 
                         elif action == "NORMAL":
-                            NORMAL = True
-                            btn_normal.is_selected = True
-                            btn_cheat.is_selected = False
+                            if len(guesses) == 0:
+                                NORMAL = True
+                                btn_normal.is_selected = True
+                                btn_cheat.is_selected = False
+                            else:
+                                print(
+                                    "WARN:Cannt switch mode in the middle of the game"
+                                )
                         elif action == "CHEAT":
-                            NORMAL = False
-                            btn_normal.is_selected = False
-                            btn_cheat.is_selected = True
+                            if len(guesses) == 0:
+                                NORMAL = False
+                                btn_normal.is_selected = False
+                                btn_cheat.is_selected = True
+                            else:
+                                print(
+                                    "WARN:Cannt switch mode in the middle of the game"
+                                )
 
             # -keyboard listener
             if event.type == pygame.KEYDOWN and not game_over:

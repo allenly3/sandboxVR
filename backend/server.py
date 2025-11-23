@@ -119,5 +119,5 @@ def handle_normal_guess(guess: str) -> Dict[str, Any]:
 
 # region API cheatguess
 @app.post("/cheatguess/{guess}")
-def handle_normal_guess(guess: str) -> Dict[str, Any]:
+def handle_cheat_guess(guess: str) -> Dict[str, Any]:
     pass
