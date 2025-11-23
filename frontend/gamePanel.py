@@ -377,6 +377,17 @@ def game_loop_single():
 
 
 # single ONLINE
+
+def send_api_reset():
+    try:
+        response = requests.post(f"{API_BASE_URL}/reset")
+        response.raise_for_status() 
+        print("ONLINE Game reset successfully.")
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"RESET Error during reset: {e}")
+        return None
+    
 def game_loop_single_online():
     global NORMAL
 
@@ -429,16 +440,21 @@ def game_loop_single_online():
 
     def reset_game():
         nonlocal SECRET_WORD, current_guess, guesses, results, current_row, game_over
-        SECRET_WORD = random.choice(WORD_LIST).upper()
-        print(f"New Secret Word: {SECRET_WORD}")
         current_guess = ""
         guesses = []
         results = []
         current_row = 0
         game_over = False
+        if send_api_reset() is None:
+            print("ERR: NO SERVER CONNECTION.")
+            return False
+        
+        return True
+
 
     # reset game in enter
-    reset_game()
+    if not reset_game():
+        return 
 
     grid_total_width, grid_total_height = WordleCanvas.get_total_dimensions(pvp=False)
 
