@@ -113,7 +113,7 @@ class WordleCanvas:
         if pvp:
             self.cell_size = self.PVP_CELL_SIZE
             self.cell_margin = self.PVP_CELL_MARGIN
-            self.font_letter = pygame.font.Font(None, 40)  
+            self.font_letter = pygame.font.Font(None, 40)
         else:
             self.cell_size = self.DEFAULT_CELL_SIZE
             self.cell_margin = self.DEFAULT_CELL_MARGIN
@@ -145,7 +145,7 @@ class WordleCanvas:
     def draw(self, surface, guesses, results, current_guess, current_row, game_over):
         for row in range(self.GRID_ROWS):
             for col in range(self.GRID_COLS):
- 
+
                 x = self.x + col * (self.cell_size + self.cell_margin)
                 y = self.y + row * (self.cell_size + self.cell_margin)
                 rect = pygame.Rect(x, y, self.cell_size, self.cell_size)
@@ -153,19 +153,18 @@ class WordleCanvas:
                 fill_color = DARK_GRAY
                 border_color = GRAY
                 letter = ""
- 
+
                 if row < current_row:
                     if row < len(results):
                         fill_color = results[row][col]
                         border_color = results[row][col]
                         letter = guesses[row][col]
- 
+
                 elif row == current_row and not game_over:
                     border_color = WHITE if col < len(current_guess) else GRAY
                     if col < len(current_guess):
                         letter = current_guess[col]
 
-         
                 pygame.draw.rect(surface, fill_color, rect, border_radius=5)
                 pygame.draw.rect(surface, border_color, rect, 2, border_radius=5)
 
@@ -200,7 +199,7 @@ def game_loop_single():
         "DRIVE",
         "REACT",
     ]
- 
+
     BTN_W, BTN_H = 150, 50
     WORD_LENGTH = 5
     MAX_GUESSES = 6
@@ -209,7 +208,7 @@ def game_loop_single():
     btn_replay = Button("Replay", SCREEN_WIDTH - BTN_W - 20, 20, BTN_W, BTN_H, "REPLAY")
     game_buttons = [btn_back, btn_replay]
 
-    #in game var
+    # in game var
     SECRET_WORD = ""
     current_guess = ""
     guesses = []
@@ -221,13 +220,13 @@ def game_loop_single():
         colors = [GRAY] * WORD_LENGTH
         secret_word_letters = list(SECRET_WORD)
 
-        #find correct
+        # find correct
         for i in range(WORD_LENGTH):
             if guess[i] == SECRET_WORD[i]:
                 colors[i] = GREEN
                 secret_word_letters[i] = None
 
-        #find present
+        # find present
         for i in range(WORD_LENGTH):
             if colors[i] == GREEN:
                 continue
@@ -251,14 +250,14 @@ def game_loop_single():
         current_row = 0
         game_over = False
 
-    #reset game in enter
+    # reset game in enter
     reset_game()
- 
+
     grid_total_width, grid_total_height = WordleCanvas.get_total_dimensions(pvp=False)
 
     grid_start_x = (SCREEN_WIDTH - grid_total_width) // 2
     grid_start_y = 120
-    #create canvas for single
+    # create canvas for single
     wordle_canvas = WordleCanvas(grid_start_x, grid_start_y, pvp=False)
 
     running = True
@@ -286,12 +285,72 @@ def game_loop_single():
 
             # -keyboard listener
             if event.type == pygame.KEYDOWN and not game_over:
-                print(event.key)
- 
+                key = event.key
+                # print(key)
+                # A-Z
+                if pygame.K_a <= key <= pygame.K_z:
+                    char = chr(key).upper()
+                    if len(current_guess) < WORD_LENGTH:
+                        current_guess += char
 
-       
+                # delete
+                elif key == pygame.K_BACKSPACE:
+                    current_guess = current_guess[:-1]
+
+                # Enter
+                elif key == pygame.K_RETURN or key == pygame.K_KP_ENTER:
+
+                    if WordleCanvas.line_check(current_guess, WORD_LENGTH):
+                        guess_colors = check_guess(current_guess)
+
+                        guesses.append(current_guess)
+                        results.append(guess_colors)
+                        current_guess = ""
+
+                        if WordleCanvas.result_check(guess_colors):
+                            game_over = True
+                            # print("Win!")
+                        elif current_row + 1 == MAX_GUESSES:
+                            game_over = True
+                            # print("Game Over. The word was ", SECRET_WORD)
+
+                        current_row += 1
+                    else:
+                        print("Guess must be 5 letters long!")
+
+        for btn in game_buttons:
+            btn.check_hover(mouse_pos)
+            btn.draw(screen)
+
+        wordle_canvas.draw(
+            screen, guesses, results, current_guess, current_row, game_over
+        )
+
+        resultColor = GREEN
+
+        if game_over:
+            message = ""
+
+            if (
+                current_row <= MAX_GUESSES
+                and current_row < 6
+                and WordleCanvas.result_check(results[current_row - 1])
+            ):
+                resultColor = GREEN
+                message = "You Win!"
+            else:
+                resultColor = YELLOW
+                message = f"Game Over. Word is: {SECRET_WORD}"
+
+            font_message = pygame.font.Font(None, 50)
+
+            message_surf = font_message.render(message, True, resultColor)
+            message_rect = message_surf.get_rect(center=(SCREEN_WIDTH // 2, 50))
+            screen.blit(message_surf, message_rect)
+
         pygame.display.flip()
         clock.tick(60)
+
 
 # run main
 if __name__ == "__main__":
