@@ -19,6 +19,7 @@ GREEN = (106, 170, 100)
 YELLOW = (201, 180, 88)
 BTN_COLOR = (70, 130, 180)
 BTN_HOVER_COLOR = (100, 149, 237)
+BTN_SELECT_COLOR =(0, 255, 0)
 
 # init panel
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -45,6 +46,7 @@ WORD_LIST = [
     "REACT",
 ]
 API_BASE_URL = "http://127.0.0.1:8000"
+NORMAL = True
 
 
 class Button:
@@ -55,9 +57,18 @@ class Button:
         self.text_rect = self.text_surf.get_rect(center=self.rect.center)
         self.action_code = action_code
         self.is_hovered = False
+        self.is_selected = None
 
     def draw(self, surface):
-        color = BTN_HOVER_COLOR if self.is_hovered else BTN_COLOR
+
+        if self.is_selected is None:
+            color = BTN_HOVER_COLOR if self.is_hovered else BTN_COLOR
+        else:
+            if self.is_selected:
+                color = BTN_SELECT_COLOR
+            else:
+                color = BTN_HOVER_COLOR if self.is_hovered else BTN_COLOR
+
         pygame.draw.rect(surface, color, self.rect, border_radius=10)
         pygame.draw.rect(surface, WHITE, self.rect, 2, border_radius=10)
         surface.blit(self.text_surf, self.text_rect)
@@ -69,7 +80,6 @@ class Button:
         if self.rect.collidepoint(mouse_pos):
             return self.action_code
         return None
-
 
 
 # canvas class
@@ -176,6 +186,7 @@ class WordleCanvas:
         global GREEN
         return all(color == GREEN for color in colors)
 
+
 # main
 def main_menu():
     center_x = SCREEN_WIDTH // 2 - 450 // 2
@@ -213,13 +224,175 @@ def main_menu():
 
         pygame.display.flip()
         clock.tick(60)
-        
+
+
+
 # single
-def game_loop_single(online=False):
+def game_loop_single():
 
     btn_back = Button("Back", 20, 20, BTN_W, BTN_H, "BACK")
     btn_replay = Button("Replay", SCREEN_WIDTH - BTN_W - 20, 20, BTN_W, BTN_H, "REPLAY")
     game_buttons = [btn_back, btn_replay]
+
+    # in game var
+    SECRET_WORD = ""
+    current_guess = ""
+    guesses = []
+    results = []
+    current_row = 0
+    game_over = False
+
+    def check_guess(guess):
+        colors = [GRAY] * WORD_LENGTH
+        secret_word_letters = list(SECRET_WORD)
+
+        # find correct
+        for i in range(WORD_LENGTH):
+            if guess[i] == SECRET_WORD[i]:
+                colors[i] = GREEN
+                secret_word_letters[i] = None
+
+        # find present
+        for i in range(WORD_LENGTH):
+            if colors[i] == GREEN:
+                continue
+
+            try:
+                idx = secret_word_letters.index(guess[i])
+                colors[i] = YELLOW
+                secret_word_letters[idx] = None
+            except ValueError:
+                pass
+
+        return colors
+
+    def reset_game():
+        nonlocal SECRET_WORD, current_guess, guesses, results, current_row, game_over
+        SECRET_WORD = random.choice(WORD_LIST).upper()
+        print(f"New Secret Word: {SECRET_WORD}")
+        current_guess = ""
+        guesses = []
+        results = []
+        current_row = 0
+        game_over = False
+
+    # reset game in enter
+    reset_game()
+
+    grid_total_width, grid_total_height = WordleCanvas.get_total_dimensions(pvp=False)
+
+    grid_start_x = (SCREEN_WIDTH - grid_total_width) // 2
+    grid_start_y = 120
+    # create canvas for single
+    wordle_canvas = WordleCanvas(grid_start_x, grid_start_y, pvp=False)
+
+    running = True
+    while running:
+        screen.fill(DARK_GRAY)
+        mouse_pos = pygame.mouse.get_pos()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    for btn in game_buttons:
+                        action = btn.check_click(mouse_pos)
+
+                        if action == "BACK":
+                            return
+
+                        elif action == "REPLAY":
+                            reset_game()
+                            print("Game reset!")
+
+            # -keyboard listener
+            if event.type == pygame.KEYDOWN and not game_over:
+                key = event.key
+                # print(key)
+                # A-Z
+                if pygame.K_a <= key <= pygame.K_z:
+                    char = chr(key).upper()
+                    if len(current_guess) < WORD_LENGTH:
+                        current_guess += char
+
+                    # print(guesses)
+                    # print(results)
+                    # print(current_guess)
+
+                # delete
+                elif key == pygame.K_BACKSPACE:
+                    current_guess = current_guess[:-1]
+
+                # Enter
+                elif key == pygame.K_RETURN or key == pygame.K_KP_ENTER:
+
+                    if WordleCanvas.line_check(current_guess, WORD_LENGTH):
+                        guess_colors = check_guess(current_guess)
+
+                        guesses.append(current_guess)
+                        results.append(guess_colors)
+                        current_guess = ""
+
+                        if WordleCanvas.result_check(guess_colors):
+                            game_over = True
+                            # print("Win!")
+                        elif current_row + 1 == MAX_GUESSES:
+                            game_over = True
+                            # print("Game Over. The word was ", SECRET_WORD)
+
+                        current_row += 1
+                    else:
+                        print("Guess must be 5 letters long!")
+
+        for btn in game_buttons:
+            btn.check_hover(mouse_pos)
+            btn.draw(screen)
+
+        wordle_canvas.draw(
+            screen, guesses, results, current_guess, current_row, game_over
+        )
+
+        resultColor = GREEN
+
+        if game_over:
+            message = ""
+
+            if current_row < 6 and WordleCanvas.result_check(results[current_row - 1]):
+                resultColor = GREEN
+                message = "You Win!"
+            else:
+                resultColor = YELLOW
+                message = f"Game Over. Word is: {SECRET_WORD}"
+
+            font_message = pygame.font.Font(None, 50)
+
+            message_surf = font_message.render(message, True, resultColor)
+            message_rect = message_surf.get_rect(center=(SCREEN_WIDTH // 2, 50))
+            screen.blit(message_surf, message_rect)
+
+        pygame.display.flip()
+        clock.tick(60)
+
+#single ONLINE
+def game_loop_single_online():
+
+    btn_back = Button("Back", 20, 20, BTN_W, BTN_H, "BACK")
+    btn_replay = Button("Replay", SCREEN_WIDTH - BTN_W - 20, 20, BTN_W, BTN_H, "REPLAY")
+
+    btn_normal= Button("Normal", 350, 20, BTN_W, BTN_H, "NORMAL")
+    btn_cheat = Button("Cheat", SCREEN_WIDTH - BTN_W - 350, 20, BTN_W, BTN_H, "CHEAT")
+    
+    game_buttons = [btn_back, btn_replay,btn_normal , btn_cheat]
+    
+    if NORMAL :
+        btn_normal.is_selected= True
+        btn_cheat.is_selected = False
+    else:
+        btn_normal.is_selected= None
+        btn_cheat.is_selected = False  
 
     # in game var
     SECRET_WORD = ""
@@ -648,6 +821,6 @@ if __name__ == "__main__":
         elif mode == "PVP":
             game_loop_pvp()
         elif mode == "ONLINE":
-            print("Online mode coming soon...")
+            game_loop_single_online()
 
         # pygame.time.delay(500)
