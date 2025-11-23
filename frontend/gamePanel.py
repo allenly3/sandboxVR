@@ -177,7 +177,7 @@ class WordleCanvas:
                     letter_surf = self.font_letter.render(letter, True, WHITE)
                     letter_rect = letter_surf.get_rect(center=rect.center)
                     surface.blit(letter_surf, letter_rect)
-                    
+
     #region wordleCanvas static
     @staticmethod
     def line_check(guess, word_length=5):
@@ -214,7 +214,7 @@ class WordleCanvas:
         return colors
 
 
-# region main menu
+# region main menu scene
 def main_menu():
     center_x = SCREEN_WIDTH // 2 - 450 // 2
 
@@ -253,7 +253,7 @@ def main_menu():
         clock.tick(60)
 
 
-# region  single
+# region  single scene
 def game_loop_single():
 
     btn_back = Button("Back", 20, 20, BTN_W, BTN_H, "BACK")
@@ -381,7 +381,7 @@ def game_loop_single():
         clock.tick(60)
 
 
-# region single ONLINE
+# region single ONLINE scene
 
 
 def send_api_reset():
@@ -562,7 +562,7 @@ def game_loop_single_online():
         clock.tick(60)
 
 
-# region pvp
+# region pvp scene
 def game_loop_pvp():
 
     btn_back = Button("Back", 20, 20, BTN_W, BTN_H, "BACK")

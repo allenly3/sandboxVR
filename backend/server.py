@@ -53,6 +53,23 @@ YELLOW = (201, 180, 88)
 
 TARGET = ""
 
+# validation
+
+
+def validateCheck(guess):
+    global TARGET
+
+    if len(guess) != 5:
+        raise HTTPException(status_code=400, detail="Guess must be 5 letters.")
+
+    if not guess.isalpha():
+        raise HTTPException(status_code=400, detail="Guess must be alphabetic.")
+
+    if TARGET == "":
+        raise HTTPException(
+            status_code=400, detail="Game not started. Call /reset first."
+        )
+
 
 # region API reset
 @app.post("/reset")
@@ -68,19 +85,8 @@ def resetTarget():
 def handle_normal_guess(guess: str) -> Dict[str, Any]:
     global TARGET
 
-    guess = guess.upper()
-
-    # server side input validation
-    if len(guess) != 5:
-        raise HTTPException(status_code=400, detail="Guess must be 5 letters.")
-
-    if not guess.isalpha():
-        raise HTTPException(status_code=400, detail="Guess must be alphabetic.")
-
-    if TARGET == "":
-        raise HTTPException(
-            status_code=400, detail="Game not started. Call /reset first."
-        )
+    guess = guess.upper().strip()
+    validateCheck(guess)
 
     colors = [GRAY] * 5
     answer_chars = list(TARGET)
