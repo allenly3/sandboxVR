@@ -1,6 +1,7 @@
 import sys
 import pygame
 import random
+import requests
 
 pygame.init()
 
@@ -43,6 +44,7 @@ WORD_LIST = [
     "DRIVE",
     "REACT",
 ]
+API_BASE_URL = "http://127.0.0.1:8000"
 
 
 class Button:
@@ -69,48 +71,8 @@ class Button:
         return None
 
 
-# main
-def main_menu():
-    center_x = SCREEN_WIDTH // 2 - 450 // 2
-
-    btn_single = Button("Single Player(Task 1)", center_x, 200, 450, 80, "SINGLE")
-    btn_online = Button("Online Mode(Task 2&3)", center_x, 300, 450, 80, "ONLINE")
-    btn_pvp = Button("2 Players(Task 4)", center_x, 400, 450, 80, "PVP")
-
-    buttons = [btn_single, btn_online, btn_pvp]
-
-    running = True
-    while running:
-        screen.fill(DARK_GRAY)
-        title_surf = font_title.render("SandboxVR Wordle Task", True, GREEN)
-        title_rect = title_surf.get_rect(center=(SCREEN_WIDTH // 2, 100))
-        screen.blit(title_surf, title_rect)
-
-        mouse_pos = pygame.mouse.get_pos()
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:  # left click
-                    for btn in buttons:
-                        action = btn.check_click(mouse_pos)
-                        if action:
-                            print(f"Selected Mode: {action}")
-                            return action
-
-        for btn in buttons:
-            btn.check_hover(mouse_pos)
-            btn.draw(screen)
-
-        pygame.display.flip()
-        clock.tick(60)
-
 
 # canvas class
-
-
 class WordleCanvas:
     # single, serve mode
     GRID_ROWS = 6
@@ -214,7 +176,44 @@ class WordleCanvas:
         global GREEN
         return all(color == GREEN for color in colors)
 
+# main
+def main_menu():
+    center_x = SCREEN_WIDTH // 2 - 450 // 2
 
+    btn_single = Button("Single Player(Task 1)", center_x, 200, 450, 80, "SINGLE")
+    btn_online = Button("Online Mode(Task 2&3)", center_x, 300, 450, 80, "ONLINE")
+    btn_pvp = Button("2 Players(Task 4)", center_x, 400, 450, 80, "PVP")
+
+    buttons = [btn_single, btn_online, btn_pvp]
+
+    running = True
+    while running:
+        screen.fill(DARK_GRAY)
+        title_surf = font_title.render("SandboxVR Wordle Task", True, GREEN)
+        title_rect = title_surf.get_rect(center=(SCREEN_WIDTH // 2, 100))
+        screen.blit(title_surf, title_rect)
+
+        mouse_pos = pygame.mouse.get_pos()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:  # left click
+                    for btn in buttons:
+                        action = btn.check_click(mouse_pos)
+                        if action:
+                            print(f"Selected Mode: {action}")
+                            return action
+
+        for btn in buttons:
+            btn.check_hover(mouse_pos)
+            btn.draw(screen)
+
+        pygame.display.flip()
+        clock.tick(60)
+        
 # single
 def game_loop_single(online=False):
 
