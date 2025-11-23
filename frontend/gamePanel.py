@@ -185,8 +185,10 @@ class WordleCanvas:
                     if row < len(results):
                         fill_color = results[row][col]
                         border_color = results[row][col]
-
-                        if row < opponentRow:
+                        if opponentRow is not None:
+                            if row < opponentRow:
+                                letter = guesses[row][col]
+                        else:
                             letter = guesses[row][col]
 
                 elif row == current_row and not game_over:
