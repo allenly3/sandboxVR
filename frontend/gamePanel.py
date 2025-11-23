@@ -185,7 +185,7 @@ class WordleCanvas:
 
 
 # single
-def game_loop_single():
+def game_loop_single(online=False):
     WORD_LIST = [
         "APPLE",
         "TIGER",
@@ -265,7 +265,6 @@ def game_loop_single():
         screen.fill(DARK_GRAY)
         mouse_pos = pygame.mouse.get_pos()
 
-        # --- 事件处理 ---
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -292,6 +291,10 @@ def game_loop_single():
                     char = chr(key).upper()
                     if len(current_guess) < WORD_LENGTH:
                         current_guess += char
+
+                    # print(guesses)
+                    # print(results)
+                    # print(current_guess)
 
                 # delete
                 elif key == pygame.K_BACKSPACE:
@@ -331,11 +334,7 @@ def game_loop_single():
         if game_over:
             message = ""
 
-            if (
-                current_row <= MAX_GUESSES
-                and current_row < 6
-                and WordleCanvas.result_check(results[current_row - 1])
-            ):
+            if current_row < 6 and WordleCanvas.result_check(results[current_row - 1]):
                 resultColor = GREEN
                 message = "You Win!"
             else:
