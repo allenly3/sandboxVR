@@ -25,7 +25,7 @@ TITLE = "SandboxVR Wordle Game"
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GRAY = (100, 100, 100)
-DARK_GRAY = (17, 22, 29) 
+DARK_GRAY = (17, 22, 29)
 GREEN = (106, 170, 100)
 YELLOW = (201, 180, 88)
 BTN_COLOR = (0, 143, 255)
@@ -37,8 +37,8 @@ TXT_COLOR = (169, 179, 193)
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption(TITLE)
 clock = pygame.time.Clock()
-font_title = pygame.font.Font(None, 60)
-font_btn = pygame.font.Font(None, 50)
+font_title = pygame.font.SysFont("Verdana", 60, bold=True)
+font_btn = pygame.font.SysFont("Verdana", 20, bold=True)
 
 # global var
 WORD_LENGTH = 5
@@ -82,8 +82,8 @@ class Button:
             else:
                 color = BTN_HOVER_COLOR if self.is_hovered else BTN_COLOR
 
-        pygame.draw.rect(surface, color, self.rect, border_radius=10)
-        pygame.draw.rect(surface, WHITE, self.rect, 2, border_radius=10)
+        pygame.draw.rect(surface, color, self.rect, border_radius=30)
+        # pygame.draw.rect(surface, WHITE, self.rect, 2, border_radius=30)
         surface.blit(self.text_surf, self.text_rect)
 
     def check_hover(self, mouse_pos):
@@ -852,7 +852,7 @@ def game_loop_pvp():
                     sound_PLAY = False
             else:
                 message = f"Game Over! Word: {SECRET_WORD}"
-                msg_color = WHITE
+                msg_color = YELLOW
                 if sound_PLAY:
                     soundLose.play()
                     sound_PLAY = False
