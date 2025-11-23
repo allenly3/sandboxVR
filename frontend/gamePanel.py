@@ -137,8 +137,8 @@ class WordleCanvas:
             self.cell_margin = self.DEFAULT_CELL_MARGIN
             self.font_letter = pygame.font.Font(None, 60)
 
-        # record for check easily
-        self.record = [[None for _ in range(5)] for _ in range(6)]
+        # for pvp
+        self.completeRow = 0
 
         self.total_width = (
             self.GRID_COLS * self.cell_size + (self.GRID_COLS - 1) * self.cell_margin
@@ -160,7 +160,16 @@ class WordleCanvas:
         height = cls.GRID_ROWS * cell_size + (cls.GRID_ROWS - 1) * cell_margin
         return width, height
 
-    def draw(self, surface, guesses, results, current_guess, current_row, game_over):
+    def draw(
+        self,
+        surface,
+        guesses,
+        results,
+        current_guess,
+        current_row,
+        game_over,
+        opponentRow=None,
+    ):
         for row in range(self.GRID_ROWS):
             for col in range(self.GRID_COLS):
 
@@ -176,7 +185,9 @@ class WordleCanvas:
                     if row < len(results):
                         fill_color = results[row][col]
                         border_color = results[row][col]
-                        letter = guesses[row][col]
+
+                        if row < opponentRow:
+                            letter = guesses[row][col]
 
                 elif row == current_row and not game_over:
                     border_color = WHITE if col < len(current_guess) else GRAY
@@ -361,24 +372,24 @@ def game_loop_pvp():
 
     SECRET_WORD = ""
 
-    #p1
+    # p1
     current_guess1 = ""
     guesses1 = []
     results1 = []
     current_row1 = 0
-    game_over1 = False  
+    game_over1 = False
 
-    #p2
+    # p2
     current_guess2 = ""
     guesses2 = []
     results2 = []
     current_row2 = 0
-    game_over2 = False   
+    game_over2 = False
 
     # whole game state
     game_over = False
 
-    #player to enter letters
+    # player to enter letters
     active_player = random.choice([1, 2])
 
     def check_guess(guess):
@@ -433,17 +444,15 @@ def game_loop_pvp():
 
     reset_game()
 
-
     grid_total_width, grid_total_height = WordleCanvas.get_total_dimensions(pvp=True)
 
-    #set postion
+    # set postion
     padding = 160
     total_area_width = 2 * grid_total_width + padding
 
     start_x_center = (SCREEN_WIDTH - total_area_width) // 2
-    grid_start_y = 120  
+    grid_start_y = 120
 
- 
     grid1_start_x = start_x_center
     canvas1 = WordleCanvas(grid1_start_x, grid_start_y, pvp=True)
 
@@ -455,7 +464,7 @@ def game_loop_pvp():
         screen.fill(DARK_GRAY)
         mouse_pos = pygame.mouse.get_pos()
 
-        #event
+        # event
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -471,6 +480,8 @@ def game_loop_pvp():
 
                         elif action == "REPLAY":
                             reset_game()
+                            canvas1.completeRow = 0
+                            canvas2.completeRow = 0
                             print("PVP Game reset!")
 
             # keyboard
@@ -497,7 +508,7 @@ def game_loop_pvp():
                 elif key == pygame.K_BACKSPACE:
                     current_guess = current_guess[:-1]
 
-                # Enter 
+                # Enter
                 elif key == pygame.K_RETURN or key == pygame.K_KP_ENTER:
 
                     if WordleCanvas.line_check(current_guess, WORD_LENGTH):
@@ -515,23 +526,27 @@ def game_loop_pvp():
                         if active_player == 1:
                             current_guess1 = ""
                             current_row1 += 1
+                            canvas1.completeRow = current_row1
+
                             if is_win:
                                 game_over1 = True
                             elif current_row1 == MAX_GUESSES:
                                 game_over1 = True
 
-                            #switch palyer
+                            # switch palyer
                             active_player = 2
 
                         elif active_player == 2:
                             current_guess2 = ""
                             current_row2 += 1
+                            canvas2.completeRow = current_row2
+
                             if is_win:
                                 game_over2 = True
                             elif current_row2 == MAX_GUESSES:
                                 game_over2 = True
 
-                            #switch palyer
+                            # switch palyer
                             active_player = 1
 
                         # whole game state
@@ -547,7 +562,6 @@ def game_loop_pvp():
                 elif active_player == 2:
                     current_guess2 = current_guess
 
- 
         for btn in game_buttons:
             btn.check_hover(mouse_pos)
             btn.draw(screen)
@@ -577,10 +591,22 @@ def game_loop_pvp():
 
         # draw 2 wordle
         canvas1.draw(
-            screen, guesses1, results1, current_guess1, current_row1, game_over1
+            screen,
+            guesses1,
+            results1,
+            current_guess1,
+            current_row1,
+            game_over1,
+            canvas2.completeRow,
         )
         canvas2.draw(
-            screen, guesses2, results2, current_guess2, current_row2, game_over2
+            screen,
+            guesses2,
+            results2,
+            current_guess2,
+            current_row2,
+            game_over2,
+            canvas1.completeRow,
         )
 
         if game_over:
@@ -604,7 +630,6 @@ def game_loop_pvp():
                 message = f"Game Over! Word: {SECRET_WORD}"
                 msg_color = WHITE
 
- 
             font_final = pygame.font.Font(None, 80)
             final_surf = font_final.render(message, True, msg_color)
             final_rect = final_surf.get_rect(
