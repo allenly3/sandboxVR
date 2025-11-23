@@ -360,7 +360,7 @@ def game_loop_single():
         if game_over:
             message = ""
 
-            if current_row < 6 and WordleCanvas.result_check(results[current_row - 1]):
+            if current_row <= 6 and WordleCanvas.result_check(results[current_row - 1]):
                 resultColor = GREEN
                 message = "You Win!"
             else:
@@ -541,7 +541,7 @@ def game_loop_single_online():
         if game_over:
             message = ""
 
-            if current_row < 6 and WordleCanvas.result_check(results[current_row - 1]):
+            if current_row <= 6 and WordleCanvas.result_check(results[current_row - 1]):
                 resultColor = GREEN
                 message = "You Win!"
             else:
@@ -551,7 +551,7 @@ def game_loop_single_online():
             font_message = pygame.font.Font(None, 50)
 
             message_surf = font_message.render(message, True, resultColor)
-            message_rect = message_surf.get_rect(center=(SCREEN_WIDTH // 2, 50))
+            message_rect = message_surf.get_rect(center=(SCREEN_WIDTH // 2, 95))
             screen.blit(message_surf, message_rect)
 
         pygame.display.flip()

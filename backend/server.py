@@ -52,22 +52,25 @@ YELLOW = (201, 180, 88)
 
 
 TARGET = ""
-#region API reset
+
+
+# region API reset
 @app.post("/reset")
 def resetTarget():
     global TARGET
     TARGET = random.choice(WORD_LIST)
     print(TARGET)
-    return {"status": "201"} 
+    return {"status": "201"}
 
 
-#region API normalguess
+# region API normalguess
 @app.post("/normalguess/{guess}")
 def handle_normal_guess(guess: str) -> Dict[str, Any]:
     global TARGET
 
     guess = guess.upper()
 
+    # server side input validation
     if len(guess) != 5:
         raise HTTPException(status_code=400, detail="Guess must be 5 letters.")
 
@@ -75,7 +78,9 @@ def handle_normal_guess(guess: str) -> Dict[str, Any]:
         raise HTTPException(status_code=400, detail="Guess must be alphabetic.")
 
     if TARGET == "":
-        raise HTTPException(status_code=400, detail="Game not started. Call /reset first.")
+        raise HTTPException(
+            status_code=400, detail="Game not started. Call /reset first."
+        )
 
     colors = [GRAY] * 5
     answer_chars = list(TARGET)
@@ -95,12 +100,10 @@ def handle_normal_guess(guess: str) -> Dict[str, Any]:
             else:
                 colors[i] = GRAY
 
-    return {
-        "colors": colors,
-        "correct": guess == TARGET
-    }
+    return {"colors": colors, "correct": guess == TARGET}
 
-#region API cheatguess
+
+# region API cheatguess
 @app.post("/cheatguess/{guess}")
 def handle_normal_guess(guess: str) -> Dict[str, Any]:
     pass
