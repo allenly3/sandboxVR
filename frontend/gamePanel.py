@@ -2,8 +2,19 @@ import sys
 import pygame
 import random
 import requests
+import os
 
 pygame.init()
+pygame.mixer.init()
+
+#sound
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ASSETS = os.path.join(BASE_DIR, "assets")
+
+soundWin = pygame.mixer.Sound(os.path.join(ASSETS, "win.mp3"))
+soundLose = pygame.mixer.Sound(os.path.join(ASSETS, "lose.mp3"))
+soundEnter = pygame.mixer.Sound(os.path.join(ASSETS, "enter.mp3"))
+soundClick = pygame.mixer.Sound(os.path.join(ASSETS, "click.mp3"))
 
 # Screen size
 SCREEN_WIDTH = 1000
@@ -79,6 +90,7 @@ class Button:
 
     def check_click(self, mouse_pos):
         if self.rect.collidepoint(mouse_pos):
+            soundClick.play()
             return self.action_code
         return None
 
@@ -255,7 +267,7 @@ def main_menu():
 
 # region  single scene
 def game_loop_single():
-
+    sound_PLAY = True
     btn_back = Button("Back", 20, 20, BTN_W, BTN_H, "BACK")
     btn_replay = Button("Replay", SCREEN_WIDTH - BTN_W - 20, 20, BTN_W, BTN_H, "REPLAY")
     game_buttons = [btn_back, btn_replay]
@@ -269,7 +281,7 @@ def game_loop_single():
     game_over = False
 
     def reset_game():
-        nonlocal SECRET_WORD, current_guess, guesses, results, current_row, game_over
+        nonlocal SECRET_WORD, current_guess, guesses, results, current_row, game_over,sound_PLAY
         SECRET_WORD = random.choice(WORD_LIST).upper()
         print(f"New Secret Word: {SECRET_WORD}")
         current_guess = ""
@@ -277,6 +289,7 @@ def game_loop_single():
         results = []
         current_row = 0
         game_over = False
+        sound_PLAY = True
 
     # reset game in enter
     reset_game()
@@ -365,9 +378,15 @@ def game_loop_single():
             message = ""
 
             if current_row <= 6 and WordleCanvas.result_check(results[current_row - 1]):
+                if sound_PLAY :
+                    soundWin.play()
+                    sound_PLAY = False
                 resultColor = GREEN
                 message = "You Win!"
             else:
+                if sound_PLAY :
+                    soundLose.play()
+                    sound_PLAY = False
                 resultColor = YELLOW
                 message = f"Game Over. Word is: {SECRET_WORD}"
 
@@ -412,6 +431,7 @@ def send_api_guess(word):
 # region single ONLINE scene
 def game_loop_single_online():
     global NORMAL
+    sound_PLAY  = True
 
     btn_back = Button("Back", 20, 20, BTN_W, BTN_H, "BACK")
     btn_replay = Button("Replay", SCREEN_WIDTH - BTN_W - 20, 20, BTN_W, BTN_H, "REPLAY")
@@ -437,12 +457,13 @@ def game_loop_single_online():
     game_over = False
 
     def reset_game():
-        nonlocal SECRET_WORD, current_guess, guesses, results, current_row, game_over
+        nonlocal SECRET_WORD, current_guess, guesses, results, current_row, game_over, sound_PLAY
         current_guess = ""
         guesses = []
         results = []
         current_row = 0
         game_over = False
+        sound_PLAY = True
         if send_api_reset() is None:
             print("Reset ERR: NO SERVER CONNECTION.")
             return False
@@ -557,8 +578,14 @@ def game_loop_single_online():
 
             if current_row <= 6 and WordleCanvas.result_check(results[current_row - 1]):
                 resultColor = GREEN
+                if sound_PLAY:
+                    soundWin.play()
+                    sound_PLAY = False
                 message = "You Win!"
             else:
+                if sound_PLAY:
+                    soundLose.play()
+                    sound_PLAY = False
                 resultColor = YELLOW
                 message = f"Game Over. Word is: {SECRET_WORD}"
 
@@ -574,6 +601,7 @@ def game_loop_single_online():
 
 # region pvp scene
 def game_loop_pvp():
+    sound_PLAY = True
 
     btn_back = Button("Back", 20, 20, BTN_W, BTN_H, "BACK")
     btn_replay = Button("Replay", SCREEN_WIDTH - BTN_W - 20, 20, BTN_W, BTN_H, "REPLAY")
@@ -602,7 +630,7 @@ def game_loop_pvp():
     active_player = random.choice([1, 2])
 
     def reset_game():
-        nonlocal SECRET_WORD, current_guess1, guesses1, results1, current_row1, game_over1
+        nonlocal SECRET_WORD, current_guess1, guesses1, results1, current_row1, game_over1,sound_PLAY
         nonlocal current_guess2, guesses2, results2, current_row2, game_over2
         nonlocal game_over, active_player
 
@@ -625,6 +653,7 @@ def game_loop_pvp():
         )
 
         game_over = False
+        sound_PLAY = True
         active_player = random.choice([1, 2])
 
     reset_game()
@@ -803,15 +832,27 @@ def game_loop_pvp():
             ):
                 message = "Draw Game!"
                 msg_color = GREEN
+                if sound_PLAY:
+                    soundWin.play()
+                    sound_PLAY = False
             elif WordleCanvas.result_check(results1[-1]):
                 message = "Player 1 Wins!"
                 msg_color = GREEN
+                if sound_PLAY:
+                    soundWin.play()
+                    sound_PLAY = False
             elif WordleCanvas.result_check(results2[-1]):
                 message = "Player 2 Wins!"
                 msg_color = GREEN
+                if sound_PLAY:
+                    soundWin.play()
+                    sound_PLAY = False
             else:
                 message = f"Game Over! Word: {SECRET_WORD}"
                 msg_color = WHITE
+                if sound_PLAY:
+                    soundLose.play()
+                    sound_PLAY = False
 
             font_final = pygame.font.Font(None, 80)
             final_surf = font_final.render(message, True, msg_color)
