@@ -12,7 +12,7 @@ TITLE = "SandboxVR Wordle Game"
 # Color
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-GRAY = (200, 200, 200)
+GRAY = (100, 100, 100)
 DARK_GRAY = (50, 50, 50)
 GREEN = (106, 170, 100)
 YELLOW = (201, 180, 88)
@@ -511,6 +511,7 @@ def game_loop_pvp():
 
                         is_win = WordleCanvas.result_check(guess_colors)
 
+                        current_guess = ""
                         if active_player == 1:
                             current_guess1 = ""
                             current_row1 += 1
