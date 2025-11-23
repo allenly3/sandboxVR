@@ -49,6 +49,7 @@ API_BASE_URL = "http://127.0.0.1:8000"
 NORMAL = True
 
 
+# region button class
 class Button:
     def __init__(self, text, x, y, width, height, action_code):
         self.rect = pygame.Rect(x, y, width, height)
@@ -82,7 +83,7 @@ class Button:
         return None
 
 
-# canvas class
+# region canvas class
 class WordleCanvas:
     # single, serve mode
     GRID_ROWS = 6
@@ -187,7 +188,7 @@ class WordleCanvas:
         return all(color == GREEN for color in colors)
 
 
-# main
+# region main menu
 def main_menu():
     center_x = SCREEN_WIDTH // 2 - 450 // 2
 
@@ -226,7 +227,7 @@ def main_menu():
         clock.tick(60)
 
 
-# single
+# region  single
 def game_loop_single():
 
     btn_back = Button("Back", 20, 20, BTN_W, BTN_H, "BACK")
@@ -376,7 +377,7 @@ def game_loop_single():
         clock.tick(60)
 
 
-# single ONLINE
+# region single ONLINE
 
 
 def send_api_reset():
@@ -511,12 +512,12 @@ def game_loop_single_online():
                         if resp is None:
                             print("NO SERVER CONNECTION.")
                             return
-                        guess_colors = resp["colors"]
+                        guess_colors = [tuple(c) for c in resp["colors"]]
                         guesses.append(current_guess)
                         results.append(guess_colors)
                         current_guess = ""
 
-                        if WordleCanvas.result_check(guess_colors):
+                        if resp["correct"]:
                             game_over = True
                             # print("Win!")
                         elif current_row + 1 == MAX_GUESSES:
@@ -557,7 +558,7 @@ def game_loop_single_online():
         clock.tick(60)
 
 
-# pvp
+# region pvp
 def game_loop_pvp():
 
     btn_back = Button("Back", 20, 20, BTN_W, BTN_H, "BACK")
@@ -831,7 +832,7 @@ def game_loop_pvp():
         clock.tick(60)
 
 
-# run main
+# region run main
 if __name__ == "__main__":
     while True:
         mode = main_menu()

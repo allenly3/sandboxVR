@@ -52,7 +52,7 @@ YELLOW = (201, 180, 88)
 
 
 TARGET = ""
-
+#region API reset
 @app.post("/reset")
 def resetTarget():
     global TARGET
@@ -60,6 +60,8 @@ def resetTarget():
     print(TARGET)
     return {"status": "201"} 
 
+
+#region API normalguess
 @app.post("/normalguess/{guess}")
 def handle_normal_guess(guess: str) -> Dict[str, Any]:
     global TARGET
@@ -98,6 +100,7 @@ def handle_normal_guess(guess: str) -> Dict[str, Any]:
         "correct": guess == TARGET
     }
 
+#region API cheatguess
 @app.post("/cheatguess/{guess}")
 def handle_normal_guess(guess: str) -> Dict[str, Any]:
     pass
