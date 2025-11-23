@@ -26,6 +26,24 @@ clock = pygame.time.Clock()
 font_title = pygame.font.Font(None, 60)
 font_btn = pygame.font.Font(None, 50)
 
+# global var
+WORD_LENGTH = 5
+MAX_GUESSES = 6
+BTN_W, BTN_H = 150, 50
+WORD_LIST = [
+    "APPLE",
+    "TIGER",
+    "HOUSE",
+    "GRAPE",
+    "CHAIR",
+    "TABLE",
+    "PLANE",
+    "CANDY",
+    "FANCY",
+    "DRIVE",
+    "REACT",
+]
+
 
 class Button:
     def __init__(self, text, x, y, width, height, action_code):
@@ -101,8 +119,8 @@ class WordleCanvas:
     DEFAULT_CELL_MARGIN = 10
 
     # PVP mode
-    PVP_CELL_SIZE = 40
-    PVP_CELL_MARGIN = 7
+    PVP_CELL_SIZE = 50
+    PVP_CELL_MARGIN = 8
 
     def __init__(self, x, y, pvp=False):
         # Canvas top-left position
@@ -186,23 +204,6 @@ class WordleCanvas:
 
 # single
 def game_loop_single(online=False):
-    WORD_LIST = [
-        "APPLE",
-        "TIGER",
-        "HOUSE",
-        "GRAPE",
-        "CHAIR",
-        "TABLE",
-        "PLANE",
-        "CANDY",
-        "FANCY",
-        "DRIVE",
-        "REACT",
-    ]
-
-    BTN_W, BTN_H = 150, 50
-    WORD_LENGTH = 5
-    MAX_GUESSES = 6
 
     btn_back = Button("Back", 20, 20, BTN_W, BTN_H, "BACK")
     btn_replay = Button("Replay", SCREEN_WIDTH - BTN_W - 20, 20, BTN_W, BTN_H, "REPLAY")
@@ -351,6 +352,88 @@ def game_loop_single(online=False):
         clock.tick(60)
 
 
+# pvp
+def game_loop_pvp():
+
+    btn_back = Button("Back", 20, 20, BTN_W, BTN_H, "BACK")
+    btn_replay = Button("Replay", SCREEN_WIDTH - BTN_W - 20, 20, BTN_W, BTN_H, "REPLAY")
+    game_buttons = [btn_back, btn_replay]
+
+    SECRET_WORD = ""
+
+    # p1
+    current_guess1 = ""
+    guesses1 = []
+    results1 = []
+    current_row1 = 0
+    game_over1 = False
+
+    # p2
+    current_guess2 = ""
+    guesses2 = []
+    results2 = []
+    current_row2 = 0
+    game_over2 = False
+
+    # whole game state
+    game_over = False
+
+    # player to enter letters
+    active_player = random.choice([1, 2])
+
+    def check_guess(guess):
+        pass
+
+    def reset_game():
+        nonlocal SECRET_WORD, current_guess1, guesses1, results1, current_row1, game_over1
+        nonlocal current_guess2, guesses2, results2, current_row2, game_over2
+        nonlocal game_over, active_player
+
+        SECRET_WORD = random.choice(WORD_LIST).upper()
+        print(f"New Secret Word: {SECRET_WORD}")
+
+        current_guess1, guesses1, results1, current_row1, game_over1 = (
+            "",
+            [],
+            [],
+            0,
+            False,
+        )
+        current_guess2, guesses2, results2, current_row2, game_over2 = (
+            "",
+            [],
+            [],
+            0,
+            False,
+        )
+
+        game_over = False
+        active_player = random.choice([1, 2])
+
+    reset_game()
+
+    grid_total_width, grid_total_height = WordleCanvas.get_total_dimensions(pvp=True)
+
+    # set postion
+    padding = 160
+    total_area_width = 2 * grid_total_width + padding
+
+    start_x_center = (SCREEN_WIDTH - total_area_width) // 2
+    grid_start_y = 120
+
+    grid1_start_x = start_x_center
+    canvas1 = WordleCanvas(grid1_start_x, grid_start_y, pvp=True)
+
+    grid2_start_x = start_x_center + grid_total_width + padding
+    canvas2 = WordleCanvas(grid2_start_x, grid_start_y, pvp=True)
+
+    running = True
+    while running:
+
+        pygame.display.flip()
+        clock.tick(60)
+
+
 # run main
 if __name__ == "__main__":
     while True:
@@ -358,6 +441,8 @@ if __name__ == "__main__":
 
         if mode == "SINGLE":
             game_loop_single()
+        elif mode == "PVP":
+            game_loop_pvp()
         elif mode == "ONLINE":
             print("Online mode coming soon...")
 
