@@ -75,7 +75,7 @@ def handle_normal_guess(guess: str) -> Dict[str, Any]:
     if TARGET == "":
         raise HTTPException(status_code=400, detail="Game not started. Call /reset first.")
 
-    colors = ["GRAY"] * 5
+    colors = [GRAY] * 5
     answer_chars = list(TARGET)
 
     # check correct
