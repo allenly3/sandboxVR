@@ -550,7 +550,7 @@ def game_loop_pvp():
                             active_player = 1
 
                         # whole game state
-                        if game_over1 and game_over2:
+                        if (game_over1 or game_over2) and current_row2 == current_row1:
                             game_over = True
                             print("PVP Game Over!")
 
@@ -611,21 +611,17 @@ def game_loop_pvp():
 
         if game_over:
 
-            if current_row1 < current_row2 and WordleCanvas.result_check(results1[-1]):
-                message = "Player 1 Wins!"
-                msg_color = GREEN
-            elif current_row2 < current_row1 and WordleCanvas.result_check(
+            if WordleCanvas.result_check(results1[-1]) and WordleCanvas.result_check(
                 results2[-1]
             ):
+                message = "Draw Game!"
+                msg_color = GREEN
+            elif WordleCanvas.result_check(results1[-1]):
+                message = "Player 1 Wins!"
+                msg_color = GREEN
+            elif WordleCanvas.result_check(results2[-1]):
                 message = "Player 2 Wins!"
                 msg_color = GREEN
-            elif (
-                current_row1 == current_row2
-                and WordleCanvas.result_check(results1[-1])
-                and WordleCanvas.result_check(results2[-1])
-            ):
-                message = "It's a Draw!"
-                msg_color = YELLOW
             else:
                 message = f"Game Over! Word: {SECRET_WORD}"
                 msg_color = WHITE
