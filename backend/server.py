@@ -61,4 +61,42 @@ def resetTarget():
 
 @app.post("/normalguess/{guess}")
 def handle_normal_guess(guess: str) -> Dict[str, Any]:
+    global TARGET
+
+    guess = guess.upper()
+
+    if len(guess) != 5:
+        raise HTTPException(status_code=400, detail="Guess must be 5 letters.")
+
+    if not guess.isalpha():
+        raise HTTPException(status_code=400, detail="Guess must be alphabetic.")
+
+    if TARGET == "":
+        raise HTTPException(status_code=400, detail="Game not started. Call /reset first.")
+
+    colors = ["GRAY"] * 5
+    answer_chars = list(TARGET)
+
+    # check correct
+    for i in range(5):
+        if guess[i] == TARGET[i]:
+            colors[i] = GREEN
+            answer_chars[i] = None  # remove matched char
+
+    # present
+    for i in range(5):
+        if colors[i] == GRAY:
+            if guess[i] in answer_chars:
+                colors[i] = YELLOW
+                answer_chars[answer_chars.index(guess[i])] = None
+            else:
+                colors[i] = GRAY
+
+    return {
+        "colors": colors,
+        "correct": guess == TARGET
+    }
+
+@app.post("/cheatguess/{guess}")
+def handle_normal_guess(guess: str) -> Dict[str, Any]:
     pass

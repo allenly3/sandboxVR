@@ -388,6 +388,20 @@ def send_api_reset():
         print(f"RESET Error during reset: {e}")
         return None
     
+def send_api_guess(word):
+    global NORMAL
+    try:
+        if NORMAL:
+            response = requests.post(f"{API_BASE_URL}/normalguess/{word}")
+        else:
+            response = requests.post(f"{API_BASE_URL}/cheatguess/{word}")
+        response.raise_for_status() 
+        print("ONLINE Game reset successfully.")
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"RESET Error during reset: {e}")
+        return None
+    
 def game_loop_single_online():
     global NORMAL
 
@@ -413,30 +427,6 @@ def game_loop_single_online():
     results = []
     current_row = 0
     game_over = False
-
-    def check_guess(guess):
-        colors = [GRAY] * WORD_LENGTH
-        secret_word_letters = list(SECRET_WORD)
-
-        # find correct
-        for i in range(WORD_LENGTH):
-            if guess[i] == SECRET_WORD[i]:
-                colors[i] = GREEN
-                secret_word_letters[i] = None
-
-        # find present
-        for i in range(WORD_LENGTH):
-            if colors[i] == GREEN:
-                continue
-
-            try:
-                idx = secret_word_letters.index(guess[i])
-                colors[i] = YELLOW
-                secret_word_letters[idx] = None
-            except ValueError:
-                pass
-
-        return colors
 
     def reset_game():
         nonlocal SECRET_WORD, current_guess, guesses, results, current_row, game_over
@@ -516,8 +506,11 @@ def game_loop_single_online():
                 elif key == pygame.K_RETURN or key == pygame.K_KP_ENTER:
 
                     if WordleCanvas.line_check(current_guess, WORD_LENGTH):
-                        guess_colors = check_guess(current_guess)
-
+                        resp = send_api_guess(current_guess)
+                        if resp is None:
+                            print("NO SERVER CONNECTION.")
+                            return 
+                        guess_colors = resp["colors"]
                         guesses.append(current_guess)
                         results.append(guess_colors)
                         current_guess = ""
