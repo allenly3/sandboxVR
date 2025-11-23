@@ -378,16 +378,18 @@ def game_loop_single():
 
 # single ONLINE
 
+
 def send_api_reset():
     try:
         response = requests.post(f"{API_BASE_URL}/reset")
-        response.raise_for_status() 
+        response.raise_for_status()
         print("ONLINE Game reset successfully.")
         return response.json()
     except requests.exceptions.RequestException as e:
         print(f"RESET Error during reset: {e}")
         return None
-    
+
+
 def send_api_guess(word):
     global NORMAL
     try:
@@ -395,13 +397,14 @@ def send_api_guess(word):
             response = requests.post(f"{API_BASE_URL}/normalguess/{word}")
         else:
             response = requests.post(f"{API_BASE_URL}/cheatguess/{word}")
-        response.raise_for_status() 
-        print("ONLINE Game reset successfully.")
+        response.raise_for_status()
+        print("ONLINE Game Guess Checked.")
         return response.json()
     except requests.exceptions.RequestException as e:
         print(f"RESET Error during reset: {e}")
         return None
-    
+
+
 def game_loop_single_online():
     global NORMAL
 
@@ -438,13 +441,12 @@ def game_loop_single_online():
         if send_api_reset() is None:
             print("ERR: NO SERVER CONNECTION.")
             return False
-        
-        return True
 
+        return True
 
     # reset game in enter
     if not reset_game():
-        return 
+        return
 
     grid_total_width, grid_total_height = WordleCanvas.get_total_dimensions(pvp=False)
 
@@ -473,7 +475,6 @@ def game_loop_single_online():
 
                         elif action == "REPLAY":
                             reset_game()
-                            print("Game reset!")
 
                         elif action == "NORMAL":
                             NORMAL = True
@@ -509,7 +510,7 @@ def game_loop_single_online():
                         resp = send_api_guess(current_guess)
                         if resp is None:
                             print("NO SERVER CONNECTION.")
-                            return 
+                            return
                         guess_colors = resp["colors"]
                         guesses.append(current_guess)
                         results.append(guess_colors)

@@ -57,6 +57,7 @@ TARGET = ""
 def resetTarget():
     global TARGET
     TARGET = random.choice(WORD_LIST)
+    print(TARGET)
     return {"status": "201"} 
 
 @app.post("/normalguess/{guess}")
