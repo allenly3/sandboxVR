@@ -17,7 +17,7 @@ DOCUMENTATION
 
 
 
-2. Key Features
+3. Key Features
     - Task1: Pure local game, 5-letter long word, max 6 chance to guess to win. 
     - Task2 & Task3: 
         Online mode, server will validate the input, and decides SECRET_WORD. 
@@ -42,14 +42,14 @@ DOCUMENTATION
     - Players can play any mode without recompilation. 
 
 
-3. Bonus Features:
+4. Bonus Features:
     - Add Game Sound effects
     - Game Theme style is same as SandboxVR.com, like color, app logo, etc
     - Framework is light weight
     - PVP mode doesnt show guessing letter until both players finish same round
 
 
-4. Improvements / TODO List:
+5. Improvements / TODO List:
     - Add winning Animation
     - Countdown clock for entering guessing
     - PVP game add more than 2 people, and can group up 
@@ -58,7 +58,7 @@ DOCUMENTATION
     - All four modes set SECRET_WORD from online source
 
 
-5. Tech Stack
+6. Tech Stack
     - Backend: Python 3.12.2, FastAPI, Uvicorn, API Endpoints
         /reset
         /normalguess/{guess}
