@@ -10,12 +10,16 @@
 <img width="1098" height="630" alt="{80CBF455-5AF7-4822-ABBE-14B1EA535404}" src="https://github.com/user-attachments/assets/25a129b5-c3fd-407c-9a72-63b0f6ba3e2e" />
 
 - For Online Mode (Task2 and Task3), **GUESS BY YOURSELF**
+
 OR run the backend manually instead runnng 'run.bat', like switch to backend folder, cmd
+
 run server "**uvicorn server:app --reload --port 8000**"
+
 And you will see the "**Normal mode**'s SECRET_WORD like:
 <img width="1079" height="323" alt="{E001666B-EDBD-4870-AD94-22C3181E855A}" src="https://github.com/user-attachments/assets/154792aa-5e59-4483-b446-484fc8d608c2" />
 
   For **Cheat mode**, no way to get it until end. BUT you can type "AEIOU", **all Vowels**, 
+  
   and the CANDIDATES_WORD length becomes one , which is "PUNCH"
 
 <img width="779" height="89" alt="{4229B3A6-46BE-45B9-85A3-7F22FC30E546}" src="https://github.com/user-attachments/assets/20487594-0531-4be4-9677-3938c3c70929" />
