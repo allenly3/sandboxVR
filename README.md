@@ -24,9 +24,11 @@ DOCUMENTATION
 3. Key Features
     - Task1: Pure local game, 5-letter long word, max 6 chance to guess to win. 
     - Task2 & Task3: 
-        Online mode, server will validate the input, and decides SECRET_WORD. 
+        Online mode, server will validate the input, and decides SECRET_WORD. \n      
         Front-end will recieve "*****" as SECRET_WORD until gameover or guessing correct. 
+        
         Task2, Normal mode, sending API: {API_BASE_URL}/normalguess/{word}
+        
         Task3, Cheat mode, sending API: {API_BASE_URL}/cheatguess/{word}
             For cheat mode, there is a function to calculate guessing score, 
             I optmized the score, because the game only has 5 slots,
