@@ -81,6 +81,7 @@
     - Separate Interface in PVP, players can entering guessing at the same time
     - Add error handling class, like popup Msg
     - All four modes set SECRET_WORD from online source
+    - Record log
 
 
 5. Tech Stack
