@@ -4,7 +4,12 @@
 <img width="241" height="372" alt="image" src="https://github.com/user-attachments/assets/32ef32d4-a541-42af-8978-55e20dff294a" />
 
 
+
+
+
 **GAME DESIGN**
+<img width="1038" height="730" alt="{F8160217-55C5-4683-A718-DAC807522094}" src="https://github.com/user-attachments/assets/11c71110-7b7f-449a-ac12-510dad9e43f8" />
+
 
 
 
@@ -47,6 +52,7 @@
       * The first entring player is random
       * Two players take turns inputting guessing
       * Only both players finish guessing lines show guessing letter+color, otherwise only show guessing color
+<img width="1003" height="633" alt="{69FD6CB7-2749-47C4-B0BB-98354311E972}" src="https://github.com/user-attachments/assets/de187f74-b131-4edb-8cbb-63d94a637925" />
 
     
     - Players can play any mode without recompilation. 
