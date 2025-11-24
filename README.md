@@ -8,10 +8,14 @@ GAME DESIGN
 DOCUMENTATION
 1. Project Overview
     This is the Sandbox VR Wordle Task.
+    
     This game is written by Python 3.12.2, both front-end and back-end. 
+    
     (I was trying to use Unity or Cocos, but for this worde game, those Game Engines are too heavy.
     So Finally decicded using pygame.)
+    
     The game Menu has 3 modes,  single Mode(task1) , Online Mode and PVP Mode(2 player competing, task4).
+    
     And in Online Mode, players can choose "Normal"(task2) or "Cheat"(task3), 
     and guessing result will be decided by the server under online Mode.
 
