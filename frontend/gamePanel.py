@@ -60,7 +60,7 @@ WORD_LIST = [
 API_BASE_URL = "http://127.0.0.1:8000"
 NORMAL = True
 
-#icon change
+# icon change
 try:
     icon_path = os.path.join(ASSETS, "sandboxVR_logo.png")
     icon_img = pygame.image.load(icon_path)
@@ -68,7 +68,8 @@ try:
 except pygame.error as e:
     pass
 except NameError:
-    pass 
+    pass
+
 
 # region button class
 class Button:
@@ -252,6 +253,28 @@ def main_menu():
         title_surf = font_title.render("SandboxVR Wordle Task", True, WHITE)
         title_rect = title_surf.get_rect(center=(SCREEN_WIDTH // 2, 100))
         screen.blit(title_surf, title_rect)
+
+        legend_x = SCREEN_WIDTH // 2 - 200  # starting point
+        legend_y = 500
+        box_size = 40
+        gap = 150
+
+        # GREEN = HIT
+        pygame.draw.rect(screen, GREEN, (legend_x, legend_y, box_size, box_size))
+        text_hit = font_btn.render("HIT", True, WHITE)
+        screen.blit(text_hit, (legend_x + box_size + 10, legend_y + 5))
+
+        # YELLOW = PRESENT
+        pygame.draw.rect(screen, YELLOW, (legend_x + 130, legend_y, box_size, box_size))
+        text_present = font_btn.render("PRESENT", True, WHITE)
+        screen.blit(text_present, (legend_x + 130 + box_size + 10, legend_y + 5))
+
+        # GRAY = MISS
+        pygame.draw.rect(
+            screen, GRAY, (legend_x + gap * 2 + 10, legend_y, box_size, box_size)
+        )
+        text_miss = font_btn.render("MISS", True, WHITE)
+        screen.blit(text_miss, (legend_x + gap * 2 + box_size + 20, legend_y + 5))
 
         mouse_pos = pygame.mouse.get_pos()
 
