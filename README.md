@@ -41,7 +41,9 @@ DOCUMENTATION
     - **Task 4**, its PVP mode, 2 players compete each other. 
         Highlight designs are :
                 * The first entring player is random
+                
                 * Two players take turns inputting guessing
+                
                 * Only both players finish guessing lines show guessing letter+color, otherwise only show guessing color
 
     
