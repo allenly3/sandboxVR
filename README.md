@@ -30,6 +30,7 @@
 
 
 2. Key Features
+    - Players can play any mode without recompilation. 
     - **Task1**: Pure local game, 5-letter long word, max 6 chance to guess to win. 
     - **Task2** & **Task3**: 
         Online mode, server will validate the input, and decides SECRET_WORD.  
@@ -55,7 +56,7 @@
 <img width="1003" height="633" alt="{69FD6CB7-2749-47C4-B0BB-98354311E972}" src="https://github.com/user-attachments/assets/de187f74-b131-4edb-8cbb-63d94a637925" />
 
     
-    - Players can play any mode without recompilation. 
+    
 
 
 3. Bonus Features:
@@ -63,6 +64,7 @@
     - Game Theme style is same as SandboxVR.com, like color, app logo, etc
     - Framework is light weight
     - PVP mode doesnt show guessing letter until both players finish same round
+    - run 'run.bat' to play game directly
 
 
 4. Improvements / TODO List:
