@@ -28,7 +28,8 @@
     And in Online Mode, players can choose "Normal"(**task2**) or "Cheat"(**task3**), 
     and guessing result will be decided by the server under online Mode.
     
-<img width="1001" height="628" alt="{BBD432DE-0FF3-4FC7-BFB1-1BDC20977A8F}" src="https://github.com/user-attachments/assets/5334c164-797d-4d98-9bf1-cfd84a05cf0e" />
+<img width="1008" height="627" alt="{9F48F890-E1C1-43AB-926E-4E74DF1ECCEB}" src="https://github.com/user-attachments/assets/565a347d-48d2-471a-bd74-809aa46c2f0f" />
+
 
 
 
@@ -65,6 +66,9 @@
 3. Bonus Features:
     - Add Game Sound effects
     - Game Theme style is same as SandboxVR.com, like color, app logo, etc
+    <img width="1000" height="48" alt="{EE5F9D87-635A-44A5-9817-7F9AAC39DA2E}" src="https://github.com/user-attachments/assets/61124faf-0d14-4e3a-a8f1-896b067a251f" />
+    <img width="1000" height="835" alt="{45517037-3F6F-4A57-B6C6-1DD20185C997}" src="https://github.com/user-attachments/assets/d133da53-5c69-43ad-9ca9-895b3d3d057a" />
+
     - Framework is light weight
     - PVP mode doesnt show guessing letter until both players finish same round
     - run 'run.bat' to play game directly
