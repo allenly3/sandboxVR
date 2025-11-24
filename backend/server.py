@@ -1,7 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from typing import List, Dict, Any
 import random
-import re
 
 app = FastAPI()
 
