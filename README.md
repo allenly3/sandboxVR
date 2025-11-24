@@ -9,10 +9,10 @@
 - For Local game ( Task1 and Task4), you will see the SECRET_WORD in the cmd window when you run 'run.bat'
 <img width="1098" height="630" alt="{80CBF455-5AF7-4822-ABBE-14B1EA535404}" src="https://github.com/user-attachments/assets/25a129b5-c3fd-407c-9a72-63b0f6ba3e2e" />
 
-- For Online Mode (Task2 and Task3), **GUESS BY YOURSELF. **
+- For Online Mode (Task2 and Task3), **GUESS BY YOURSELF**
   OR run the backend manually instead runnng 'run.bat', like switch to backend folder, cmd
-  run server "uvicorn server:app --reload --port 8000"
-  And you will see the "**Normal" mode'**s SECRET_WORD like:
+  run server "**uvicorn server:app --reload --port 8000**"
+  And you will see the "**Normal mode**'s SECRET_WORD like:
   <img width="1079" height="323" alt="{E001666B-EDBD-4870-AD94-22C3181E855A}" src="https://github.com/user-attachments/assets/154792aa-5e59-4483-b446-484fc8d608c2" />
 
   For **Cheat mode**, no way to get it until end. BUT you can type "AEIOU", **all Vowels**, 
