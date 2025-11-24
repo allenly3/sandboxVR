@@ -22,27 +22,27 @@ DOCUMENTATION
 
 
 3. Key Features
-    - Task1: Pure local game, 5-letter long word, max 6 chance to guess to win. 
-    - Task2 & Task3: 
-        Online mode, server will validate the input, and decides SECRET_WORD. \n      
+    - **Task1**: Pure local game, 5-letter long word, max 6 chance to guess to win. 
+    - **Task2** & **Task3**: 
+        Online mode, server will validate the input, and decides SECRET_WORD.  
         Front-end will recieve "*****" as SECRET_WORD until gameover or guessing correct. 
         
-        Task2, Normal mode, sending API: {API_BASE_URL}/normalguess/{word}
+        **Task2**, Normal mode, sending API: {API_BASE_URL}/**normalguess**/{word}
         
-        Task3, Cheat mode, sending API: {API_BASE_URL}/cheatguess/{word}
+        **Task3**, Cheat mode, sending API: {API_BASE_URL}/**cheatguess**/{word}
             For cheat mode, there is a function to calculate guessing score, 
             I optmized the score, because the game only has 5 slots,
             if get 4 presents , players are more likely to win than 1 hit
-            so I set ratio socre of hit/present =  4/1
+            so I set ratio socre of **hit/present =  4/1**
 
         Both tasks are using {API_BASE_URL}/reset to reset game status
         In online mode,  once game starts, player cannot switch mode until game over or replay game. 
 
-    - Task 4, its PVP mode, 2 players compete each other. 
+    - **Task 4**, its PVP mode, 2 players compete each other. 
         Highlight designs are :
-            * The first entring player is random
-            * Two players take turns inputting guessing
-            * Only both players finish guessing lines show guessing letter+color, otherwise only show guessing color
+                * The first entring player is random
+                * Two players take turns inputting guessing
+                * Only both players finish guessing lines show guessing letter+color, otherwise only show guessing color
 
     
     - Players can play any mode without recompilation. 
