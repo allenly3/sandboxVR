@@ -1,11 +1,14 @@
-BUILD AND RUN
+**BUILD AND RUN**
+- Make Sure Your Device having Python 3.12.2 or higher installed
+- Run 'run.bat'
+<img width="241" height="372" alt="image" src="https://github.com/user-attachments/assets/32ef32d4-a541-42af-8978-55e20dff294a" />
+
+
+**GAME DESIGN**
 
 
 
-GAME DESIGN
-
-
-DOCUMENTATION
+**DOCUMENTATION**
 1. Project Overview
     This is the Sandbox VR Wordle Task.
     
@@ -21,7 +24,7 @@ DOCUMENTATION
 
 
 
-3. Key Features
+2. Key Features
     - **Task1**: Pure local game, 5-letter long word, max 6 chance to guess to win. 
     - **Task2** & **Task3**: 
         Online mode, server will validate the input, and decides SECRET_WORD.  
@@ -30,10 +33,10 @@ DOCUMENTATION
         **Task2**, Normal mode, sending API: {API_BASE_URL}/**normalguess**/{word}
         
         **Task3**, Cheat mode, sending API: {API_BASE_URL}/**cheatguess**/{word}
-            For cheat mode, there is a function to calculate guessing score, 
-            I optmized the score, because the game only has 5 slots,
-            if get 4 presents , players are more likely to win than 1 hit
-            so I set ratio socre of **hit/present =  4/1**
+        For cheat mode, there is a function to calculate guessing score,
+        I optmized the score, because the game only has 5 slots,
+        if get 4 presents , players are more likely to win than 1 hit
+        so I set ratio socre of **hit/present =  4/1**
 
         Both tasks are using {API_BASE_URL}/reset to reset game status
         In online mode,  once game starts, player cannot switch mode until game over or replay game. 
@@ -49,14 +52,14 @@ DOCUMENTATION
     - Players can play any mode without recompilation. 
 
 
-4. Bonus Features:
+3. Bonus Features:
     - Add Game Sound effects
     - Game Theme style is same as SandboxVR.com, like color, app logo, etc
     - Framework is light weight
     - PVP mode doesnt show guessing letter until both players finish same round
 
 
-5. Improvements / TODO List:
+4. Improvements / TODO List:
     - Add winning Animation
     - Countdown clock for entering guessing
     - PVP game add more than 2 people, and can group up 
@@ -65,7 +68,8 @@ DOCUMENTATION
     - All four modes set SECRET_WORD from online source
 
 
-6. Tech Stack
+5. Tech Stack
+    - Language: Python
     - Backend: Python 3.12.2, FastAPI, Uvicorn, API Endpoints
         /reset
         /normalguess/{guess}
@@ -74,5 +78,5 @@ DOCUMENTATION
     - Frontend: Python 3.12.2, Pygame
         In Game Logic.
 
-    - Deployment: Docker
+    - Deployment: Docker, Bash
 
