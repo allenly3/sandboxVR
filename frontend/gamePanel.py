@@ -60,6 +60,15 @@ WORD_LIST = [
 API_BASE_URL = "http://127.0.0.1:8000"
 NORMAL = True
 
+#icon change
+try:
+    icon_path = os.path.join(ASSETS, "sandboxVR_logo.png")
+    icon_img = pygame.image.load(icon_path)
+    pygame.display.set_icon(icon_img)
+except pygame.error as e:
+    pass
+except NameError:
+    pass 
 
 # region button class
 class Button:
