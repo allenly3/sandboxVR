@@ -103,6 +103,11 @@ Game First View:
 
     - Framework is light weight
     - PVP mode doesnt show guessing letter until both players finish same round
+    - Good Game Code Region set:
+    
+    <img width="141" height="567" alt="{B7B9E3E4-1129-4BE2-A543-63A213DC5EB3}" src="https://github.com/user-attachments/assets/c8050fd3-b7b7-4041-b5eb-c45474389851" />
+    
+
     - run 'build.bat' to play game directly
 
 
@@ -117,17 +122,30 @@ Game First View:
 
 5. Tradeoff:
     - Pygame vs Unity/Cocos: Pygame is light for simple game, whole folder is size 900KB. 
+    
     Unity/Cocos a clean package is at least around 20MB
-        <img width="272" height="179" alt="{45FC9F97-8679-46A5-A73A-5CA86485CA7C}" src="https://github.com/user-attachments/assets/fa3ceb9d-3a41-4183-89ce-200294f977bb" />
-        Although, Pygame doesnt have that many built-in components. 
+    
+    <img width="272" height="179" alt="{45FC9F97-8679-46A5-A73A-5CA86485CA7C}" src="https://github.com/user-attachments/assets/fa3ceb9d-3a41-4183-89ce-200294f977bb" />
+
+        
+   Although, Pygame doesnt have that many built-in components. 
 
     - Containerization : Only have back-end server in Docker container. Container doesnt have GUI, 
-    need to install server-x. So need users to install Docker and Python on their PC.
+    need to install server-x. So only place backend in Docker, only need users to install Docker and Python on their PC.
 
     - Cheating mode vs Local Mode:
       Under Cheating Mode , server CPU needs to iterates full Word Pools. 
       If the pool is large, that might take time long and much CPU memory.
       Can extract a persentation of whole word pool randomly. 
+
+     - Optimized Score rules.
+       This is for cheat mode.
+       I think, if a player gets 4 Presents is the same possiblity to guess correctly as getting 1 Hit. 
+
+      <img width="562" height="220" alt="{6FBB8C89-51D0-459F-B478-6409FE65A2D0}" src="https://github.com/user-attachments/assets/ff033473-a7b8-452f-9e52-82e0f06fb6e2" />
+      
+
+
 
 
 
