@@ -5,6 +5,24 @@
 
 
 
+**TEST WAY**
+- For Local game ( Task1 and Task4), you will see the SECRET_WORD in the cmd window when you run 'run.bat'
+<img width="1098" height="630" alt="{80CBF455-5AF7-4822-ABBE-14B1EA535404}" src="https://github.com/user-attachments/assets/25a129b5-c3fd-407c-9a72-63b0f6ba3e2e" />
+
+- For Online Mode (Task2 and Task3), **GUESS BY YOURSELF**
+
+OR run the backend manually instead runnng 'run.bat', like switch to backend folder, cmd
+
+run server "**uvicorn server:app --reload --port 8000**"
+
+And you will see the "**Normal mode**'s SECRET_WORD like:
+<img width="1079" height="323" alt="{E001666B-EDBD-4870-AD94-22C3181E855A}" src="https://github.com/user-attachments/assets/154792aa-5e59-4483-b446-484fc8d608c2" />
+
+  For **Cheat mode**, no way to get it until end. BUT you can type "AEIOU", **all Vowels**, 
+  
+  and the CANDIDATES_WORD length becomes one , which is "PUNCH"
+
+<img width="779" height="89" alt="{4229B3A6-46BE-45B9-85A3-7F22FC30E546}" src="https://github.com/user-attachments/assets/20487594-0531-4be4-9677-3938c3c70929" />
 
 
 **GAME DESIGN**
@@ -28,7 +46,8 @@
     And in Online Mode, players can choose "Normal"(**task2**) or "Cheat"(**task3**), 
     and guessing result will be decided by the server under online Mode.
     
-<img width="1001" height="628" alt="{BBD432DE-0FF3-4FC7-BFB1-1BDC20977A8F}" src="https://github.com/user-attachments/assets/5334c164-797d-4d98-9bf1-cfd84a05cf0e" />
+<img width="1008" height="627" alt="{9F48F890-E1C1-43AB-926E-4E74DF1ECCEB}" src="https://github.com/user-attachments/assets/565a347d-48d2-471a-bd74-809aa46c2f0f" />
+
 
 
 
@@ -65,6 +84,9 @@
 3. Bonus Features:
     - Add Game Sound effects
     - Game Theme style is same as SandboxVR.com, like color, app logo, etc
+    <img width="1000" height="48" alt="{EE5F9D87-635A-44A5-9817-7F9AAC39DA2E}" src="https://github.com/user-attachments/assets/61124faf-0d14-4e3a-a8f1-896b067a251f" />
+    <img width="1000" height="835" alt="{45517037-3F6F-4A57-B6C6-1DD20185C997}" src="https://github.com/user-attachments/assets/d133da53-5c69-43ad-9ca9-895b3d3d057a" />
+
     - Framework is light weight
     - PVP mode doesnt show guessing letter until both players finish same round
     - run 'run.bat' to play game directly
@@ -77,6 +99,7 @@
     - Separate Interface in PVP, players can entering guessing at the same time
     - Add error handling class, like popup Msg
     - All four modes set SECRET_WORD from online source
+    - Record log
 
 
 5. Tech Stack
