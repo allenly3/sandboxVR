@@ -1,17 +1,22 @@
 **BUILD AND RUN**
-- Make Sure Your Device having Python 3.12.2 or higher installed
-- Run 'run.bat'
-<img width="241" height="372" alt="image" src="https://github.com/user-attachments/assets/32ef32d4-a541-42af-8978-55e20dff294a" />
+System Requiremnets
+- Docker Installed 
+- Python 3.12.2 or higher installed
+- Run 'build.bat'
+<img width="371" height="247" alt="image" src="https://github.com/user-attachments/assets/d4f61fa2-7cc0-49dd-8171-c665192c4d22" />
 
 
+
+<br/>
+<br/>
 
 **TEST WAY**
-- For Local game ( Task1 and Task4), you will see the SECRET_WORD in the cmd window when you run 'run.bat'
+- For Local game ( Task1 and Task4), you will see the SECRET_WORD in the cmd window when you run 'build.bat'
 <img width="1098" height="630" alt="{80CBF455-5AF7-4822-ABBE-14B1EA535404}" src="https://github.com/user-attachments/assets/25a129b5-c3fd-407c-9a72-63b0f6ba3e2e" />
 
 - For Online Mode (Task2 and Task3), **GUESS BY YOURSELF**
 
-OR run the backend manually instead runnng 'run.bat', like switch to backend folder, cmd
+OR run the backend manually instead runnng 'build.bat', like switch to backend folder, cmd
 
 run server "**uvicorn server:app --reload --port 8000**"
 
@@ -89,7 +94,7 @@ And you will see the "**Normal mode**'s SECRET_WORD like:
 
     - Framework is light weight
     - PVP mode doesnt show guessing letter until both players finish same round
-    - run 'run.bat' to play game directly
+    - run 'build.bat' to play game directly
 
 
 4. Improvements / TODO List:
