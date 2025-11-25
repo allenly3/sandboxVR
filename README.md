@@ -1,16 +1,16 @@
-**BUILD AND RUN**
-System Requiremnets
+****BUILD AND RUN****
+
+System Requirements
 - Docker Installed 
 - Python 3.12.2 or higher installed
 - Run 'build.bat'
 <img width="371" height="247" alt="image" src="https://github.com/user-attachments/assets/d4f61fa2-7cc0-49dd-8171-c665192c4d22" />
 
 
+---------------------------------------------------------------------------
 
-<br/>
-<br/>
 
-**TEST WAY**
+****TEST WAY****
 - For Local game ( Task1 and Task4), you will see the SECRET_WORD in the cmd window when you run 'build.bat'
 <img width="1098" height="630" alt="{80CBF455-5AF7-4822-ABBE-14B1EA535404}" src="https://github.com/user-attachments/assets/25a129b5-c3fd-407c-9a72-63b0f6ba3e2e" />
 
@@ -25,18 +25,20 @@ And you will see the "**Normal mode**'s SECRET_WORD like:
 
   For **Cheat mode**, no way to get it until end. BUT you can type "AEIOU", **all Vowels**, 
   
-  and the CANDIDATES_WORD length becomes one , which is "PUNCH"
+  and the CANDIDATES_WORD length becomes 1 , which is "PUNCH"
 
 <img width="779" height="89" alt="{4229B3A6-46BE-45B9-85A3-7F22FC30E546}" src="https://github.com/user-attachments/assets/20487594-0531-4be4-9677-3938c3c70929" />
 
-
-**GAME DESIGN**
+------------------------------
+****GAME DESIGN****
 <img width="1038" height="730" alt="{F8160217-55C5-4683-A718-DAC807522094}" src="https://github.com/user-attachments/assets/11c71110-7b7f-449a-ac12-510dad9e43f8" />
+<img width="684" height="784" alt="{D3D2A221-3A62-4D4C-B7E7-E3699DC9988E}" src="https://github.com/user-attachments/assets/c3ca9d28-7c53-48e1-b66d-31fb9ddd7a89" />
 
 
 
 
-**DOCUMENTATION**
+------------------------------
+****DOCUMENTATION****
 1. Project Overview
     
     This is the Sandbox VR Wordle Task.
@@ -50,7 +52,13 @@ And you will see the "**Normal mode**'s SECRET_WORD like:
     
     And in Online Mode, players can choose "Normal"(**task2**) or "Cheat"(**task3**), 
     and guessing result will be decided by the server under online Mode.
-    
+
+  Folder structure:
+  
+  <img width="408" height="401" alt="{89C61C72-F7C6-4495-807C-CF264C068787}" src="https://github.com/user-attachments/assets/6edb02f8-dbfc-4272-9491-3b733e67bbfb" />
+  
+Game First View:
+
 <img width="1008" height="627" alt="{9F48F890-E1C1-43AB-926E-4E74DF1ECCEB}" src="https://github.com/user-attachments/assets/565a347d-48d2-471a-bd74-809aa46c2f0f" />
 
 
@@ -60,7 +68,7 @@ And you will see the "**Normal mode**'s SECRET_WORD like:
     - Players can play any mode without recompilation. 
     - **Task1**: Pure local game, 5-letter long word, max 6 chance to guess to win. 
     - **Task2** & **Task3**: 
-        Online mode, server will validate the input, and decides SECRET_WORD.  
+        Online mode, server will validate the input,  decides SECRET_WORD, and send back guessing result.
         Front-end will recieve "*****" as SECRET_WORD until gameover or guessing correct. 
         
         **Task2**, Normal mode, sending API: {API_BASE_URL}/**normalguess**/{word}
@@ -71,10 +79,11 @@ And you will see the "**Normal mode**'s SECRET_WORD like:
         if get 4 presents , players are more likely to win than 1 hit
         so I set ratio socre of **hit/present =  4/1**
 
-        Both tasks are using {API_BASE_URL}/reset to reset game status
+        Both tasks are using {API_BASE_URL}/**reset** to reset game status
         In online mode,  once game starts, player cannot switch mode until game over or replay game. 
 
     - **Task 4**, its PVP mode, 2 players compete each other. 
+    
         Highlight designs are :
       
       * The first entring player is random
@@ -100,14 +109,31 @@ And you will see the "**Normal mode**'s SECRET_WORD like:
 4. Improvements / TODO List:
     - Add winning Animation
     - Countdown clock for entering guessing
-    - PVP game add more than 2 people, and can group up 
-    - Separate Interface in PVP, players can entering guessing at the same time
+    - PVP mode can add more than 2 people, and can group up 
+    - Separate Interface in PVP, players can entering guessing independently
     - Add error handling class, like popup Msg
     - All four modes set SECRET_WORD from online source
-    - Record log
+    - Best Record log
+
+5. Tradeoff:
+    - Pygame vs Unity/Cocos: Pygame is light for simple game, whole folder is size 900KB. 
+    Unity/Cocos a clean package is at least around 20MB
+        <img width="272" height="179" alt="{45FC9F97-8679-46A5-A73A-5CA86485CA7C}" src="https://github.com/user-attachments/assets/fa3ceb9d-3a41-4183-89ce-200294f977bb" />
+        Although, Pygame doesnt have that many built-in components. 
+
+    - Containerization : Only have back-end server in Docker container. Container doesnt have GUI, 
+    need to install server-x. So need users to install Docker and Python on their PC.
+
+    - Cheating mode vs Local Mode:
+      Under Cheating Mode , server CPU needs to iterates full Word Pools. 
+      If the pool is large, that might take time long and much CPU memory.
+      Can extract a persentation of whole word pool randomly. 
 
 
-5. Tech Stack
+
+
+
+6. Tech Stack
     - Language: Python
     - Backend: Python 3.12.2, FastAPI, Uvicorn, API Endpoints
         /reset
